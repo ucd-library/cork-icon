@@ -1,0 +1,14 @@
+services:
+  app:
+    image: localhost/local-dev/cork-icon
+    env_file:
+      - .env
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: '/cork-icon/secrets/gc-key.json'
+    ports:
+      - ${APP_HOST_PORT:-3000}:${APP_CONTAINER_PORT:-3000}
+    volumes:
+      - ../../src:/cork-icon/src
+      - /cork-icon/src/node_modules
+      - ../../io:/cork-icon/io
+      - ../../secrets:/cork-icon/secrets
