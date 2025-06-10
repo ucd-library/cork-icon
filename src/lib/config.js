@@ -26,6 +26,12 @@ class Config {
       this.gc.keyFileExists = fs.existsSync(this.gc.keyFilePath);
     }
 
+    this.fontAwesome = {
+      nodeModulePath: '@fortawesome/fontawesome-free',
+      svgDirectory: 'svgs',
+      iconMetadataFile: 'metadata/icons.yml'
+    }
+
   }
 
   /**
