@@ -23,7 +23,7 @@ Get the demo app up with:
 - Update icon metadata file with `node ./src/bin/process-custom.js ./io/gc-bucket/<name-of-iconset>/`
 - Review the `metadata.json` file. Specifically, update the `label` and `searchTerms` properties for each icon to improve the icon search experience.
 - If any changes are made to `metadata.json`, run the command again to ensure these are reflected in the zipped version: `node ./src/bin/process-custom.js ./io/gc-bucket/<name-of-iconset>/`
-- Copy the iconset and the dist zip file to the Google Cloud bucket
+- To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine
 
 ## Adding an icon to an existing custom iconset
 todo
@@ -34,4 +34,4 @@ todo
 - Start demo app and bash into it - `docker compose up -d` `docker compose exec app bash`
 - Run `node ./src/bin/process-fa.js <directory-you-created-in-io>`
 - `iconsets` and `dist` directories will be created in your io directory
-- Copy the contents of these directories into the appropriate spot in the Google Cloud bucket
+- To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine

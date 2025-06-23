@@ -10,7 +10,7 @@ class Config {
 
     this.iconSet = {
       directory: this.getEnv(`${ns}ICON_SET_DIRECTORY`, path.join(__dirname, '../iconsets')),
-      gcBucket: this.getEnv(`${ns}ICON_SET_GC_BUCKET`, 'cork-iconsets')
+      gcBucket: this.getEnv(`${ns}ICON_SET_GC_BUCKET`, 'cork-icon')
     };
 
     this.logger = {
