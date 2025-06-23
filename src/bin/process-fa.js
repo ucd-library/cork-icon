@@ -15,20 +15,20 @@ const __dirname = path.dirname(__filename);
 let [,, iconDir, faVersion] = process.argv;
 
 if (!iconDir) {
-  console.error('Usage: node process-fa.js <icon-directory>');
+  logger.error('Usage: node process-fa.js <icon-directory>');
   process.exit(1);
 }
 
 // ensure the icon directory exists
 if (!fs.existsSync(iconDir)) {
-  console.error(`Icon directory does not exist: ${iconDir}`);
+  logger.error(`Icon directory does not exist: ${iconDir}`);
   process.exit(1);
 }
 
 // ensure fontawesome node module is downloaded
 const faPath = path.join(iconDir, 'node_modules', config.fontAwesome.nodeModulePath);
 if (!fs.existsSync(faPath)) {
-  console.error(`FontAwesome node module not found in ${faPath}.`);
+  logger.error(`FontAwesome node module not found in ${faPath}.`);
   process.exit(1);
 }
 
@@ -36,7 +36,7 @@ if (!fs.existsSync(faPath)) {
 if (!faVersion) {
   const pkgPath = path.join(faPath, 'package.json');
   if (!fs.existsSync(pkgPath)) {
-    console.error(`package.json not found in ${faPath}`);
+    logger.error(`package.json not found in ${faPath}`);
     process.exit(1);
   }
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
@@ -83,7 +83,7 @@ const summary = {name: iconsetName, iconsets: []};
 for (const name of iconsetNames) {
   const fullName = `${iconsetName}-${name}`;
   const iconsetSummary = {name: fullName, iconCount: 0};
-  const iconsetPath = path.join(iconsetsDir, fullName, 'svgs');
+  const iconsetPath = path.join(iconsetsDir, fullName, 'icons');
   fs.mkdirSync(iconsetPath, { recursive: true });
   const sourcePath = path.join(faSvgDir, name);
   const files = fs.readdirSync(sourcePath).filter(file => file.endsWith('.svg'));
