@@ -108,7 +108,7 @@ class Iconset {
       }
       const iconName = path.basename(file, '.svg');
       // check if icon already exists
-      if ( this.icons.some(icon => icon.name === iconName) ) {
+      if ( this.icons.some(icon => icon.file === file) ) {
         //logger.info(`Icon '${iconName}' already exists in iconset '${this.name}'. Skipping.`);
         continue;
       }
