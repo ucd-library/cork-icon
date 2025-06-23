@@ -14,15 +14,16 @@ fi
 ICONSET_NAME="$1"
 
 mkdir -p "io/gc-bucket/dist"
+mkdir -p "io/gc-bucket/iconsets"
 
-if [ -d "io/gc-bucket/$ICONSET_NAME" ]; then
+if [ -d "io/gc-bucket/iconsets/$ICONSET_NAME" ]; then
   echo "Iconset '$ICONSET_NAME' already exists."
   exit 1
 fi
-mkdir -p "io/gc-bucket/$ICONSET_NAME/icons"
-touch "io/gc-bucket/$ICONSET_NAME/metadata.json"
+mkdir -p "io/gc-bucket/iconsets/$ICONSET_NAME/icons"
+touch "io/gc-bucket/iconsets/$ICONSET_NAME/metadata.json"
 
-cat > "io/gc-bucket/$ICONSET_NAME/metadata.json" <<EOF
+cat > "io/gc-bucket/iconsets/$ICONSET_NAME/metadata.json" <<EOF
 {
   "name": "$ICONSET_NAME",
   "label": "$ICONSET_NAME",
@@ -30,5 +31,5 @@ cat > "io/gc-bucket/$ICONSET_NAME/metadata.json" <<EOF
 }
 EOF
 
-echo "Template for iconset '$ICONSET_NAME' created successfully at 'io/gc-bucket/$ICONSET_NAME'."
+echo "Template for iconset '$ICONSET_NAME' created successfully at 'io/gc-bucket/iconsets/$ICONSET_NAME'."
 

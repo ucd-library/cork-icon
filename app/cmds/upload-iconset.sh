@@ -29,7 +29,7 @@ else
   echo "Uploading iconset from custom format..."
   gsutil -m rsync -r "$ICONSET_DIR" "gs://cork-icon/iconsets/$(basename "$ICONSET_DIR")"
   ZIP_NAME="$(basename "$ICONSET_DIR").zip"
-  ZIP_PATH="$(dirname "$ICONSET_DIR")/dist/$ZIP_NAME"
+  ZIP_PATH="$(dirname "$(dirname "$ICONSET_DIR")")/dist/$ZIP_NAME"
   if [ -f "$ZIP_PATH" ]; then
     gsutil cp "$ZIP_PATH" "gs://cork-icon/dist/$ZIP_NAME"
   else

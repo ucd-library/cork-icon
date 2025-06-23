@@ -6,6 +6,11 @@ import archiver from 'archiver';
 
 class Iconsets {
 
+  /**
+   * @description Instantiate iconset class from a directory containing a metadata.json file.
+   * @param {*} directory
+   * @returns {Iconset|null}
+   */
   createFromDirectory(directory){
     logger.info(`Creating iconset from directory '${directory}'`);
 
@@ -29,6 +34,13 @@ class Iconsets {
     return new Iconset(opts);
   }
 
+  /**
+   * @description Instantiate iconset class from a FontAwesome metadata file.
+   * @param {String} name - the name of the iconset, typically in the format 'fontawesome-{version}-{iconsetName}'
+   * @param {String} yamlMetadata - the path to the FontAwesome YAML metadata file
+   * @param {String} directory - the directory containing the fa iconsets
+   * @returns
+   */
   createFromFontAwesome(name, yamlMetadata, directory){
     logger.info(`Creating iconset '${name}' from FontAwesome metadata file '${yamlMetadata}' in directory '${directory}'`);
     const [, version, iconsetName] = name.split('-');
@@ -141,7 +153,20 @@ class Iconset {
     this.icons = this.icons.filter(icon => !this.iconsUnregistered.includes(icon.name));
   }
 
+  /**
+   * @description Write metadata file for the iconset.
+   * This will create a metadata.json file in the iconset's directory.
+   * @returns
+   */
   writeMetadata(){
+    if ( !this.directory ) {
+      logger.error(`No directory specified for iconset '${this.name}'`);
+      return;
+    }
+
+    // sort icons by name
+    this.icons.sort((a, b) => a.name.localeCompare(b.name));
+
     logger.info(`Writing metadata for iconset '${this.name}' to '${this.directory}'`);
     const metadataFile = path.join(this.directory, `metadata.json`);
     const metadata = {

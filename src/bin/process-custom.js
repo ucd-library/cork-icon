@@ -38,7 +38,7 @@ iconset.unregisterIcons();
 // write metadata
 iconset.writeMetadata();
 
-zipDir = zipDir || path.join(iconDir, '..', 'dist');
+zipDir = zipDir || path.join(iconDir, '../..', 'dist');
 let zipped = false;
 if (fs.existsSync(zipDir)) {
   logger.info(`Zipping iconset '${iconset.name}' to '${zipDir}'`);

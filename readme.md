@@ -15,18 +15,20 @@ Get the demo app up with:
 - build local image with `./cmds/build-local-dev.sh`
 - get google cloud bucket reader key with `./cmds/get-gc-key.sh`
 
+## Adding an icon to an existing custom iconset
+- Add the icon file to `gs://cork-icon/iconsets/<name-of-iconset>/icons` in digital-ucdavis-edu project
+- Download the iconset to your host machine with `./app/cmds/download-gc-bucket <name-of-iconset>`
 
 ## Creating a new custom iconset
-- Create the directory for your new iconset with `./app/cmds/create-iconset.sh <name-of-iconset>`, which will be placed in `./io/gc-bucket/<name-of-iconset>`
+- Create the directory for your new iconset with `./app/cmds/create-iconset.sh <name-of-iconset>`, which will be placed in `./io/gc-bucket/iconsets/<name-of-iconset>`
 - Place icons into the `icons` directory of your iconset
 - Start demo app and bash into it - `docker compose up -d` `docker compose exec app bash`
-- Update icon metadata file with `node ./src/bin/process-custom.js ./io/gc-bucket/<name-of-iconset>/`
+- Update icon metadata file with `node ./src/bin/process-custom.js ./io/gc-bucket/iconsets/<name-of-iconset>/`
 - Review the `metadata.json` file. Specifically, update the `label` and `searchTerms` properties for each icon to improve the icon search experience.
-- If any changes are made to `metadata.json`, run the command again to ensure these are reflected in the zipped version: `node ./src/bin/process-custom.js ./io/gc-bucket/<name-of-iconset>/`
+- If any changes are made to `metadata.json`, run the command again to ensure these are reflected in the zipped version: `node ./src/bin/process-custom.js ./io/gc-bucket/iconsets/<name-of-iconset>/`
+- Make sure icons look good in demo app (see demo app instructions)
 - To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine
 
-## Adding an icon to an existing custom iconset
-todo
 
 ## Uploading a new version of Font Awesome
 - npm install the new version to a directory in `io` 
