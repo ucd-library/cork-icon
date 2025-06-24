@@ -6,3 +6,4 @@ iconsets
 dist
 .DS_Store
 gc-bucket
+app/src/client/public/js

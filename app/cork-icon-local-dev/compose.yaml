@@ -6,9 +6,11 @@ services:
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: '/cork-icon/secrets/gc-key.json'
     ports:
-      - ${APP_HOST_PORT:-3000}:${APP_CONTAINER_PORT:-3000}
+      - ${APP_HOST_PORT:-3000}:3000
     volumes:
       - ../../src:/cork-icon/src
       - /cork-icon/src/node_modules
       - ../../io:/cork-icon/io
       - ../../secrets:/cork-icon/secrets
+      - ../src:/cork-icon/app/src
+      - /cork-icon/app/src/node_modules
