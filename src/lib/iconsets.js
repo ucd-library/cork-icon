@@ -3,15 +3,46 @@ import path from 'path';
 import fs from 'fs';
 import logger from './logger.js';
 import archiver from 'archiver';
+import config from './config.js';
 
 class Iconsets {
+
+  constructor(){
+    this.iconsets = [];
+  }
+
+  register(name, opts={}){
+    logger.info(`Registering iconset '${name}'`);
+    if ( !name ) {
+      logger.error('Iconset name is required');
+      return;
+    }
+
+    // check if iconset already exists
+    const existing = this.iconsets.find(iconset => iconset.name === name);
+    if ( existing ) {
+      logger.info(`Iconset '${name}' already registered. Skipping.`);
+      return existing;
+    }
+
+    const directory = path.join(config.iconSet.directory, name);
+    const iconset = this.createFromDirectory(directory, opts.aliases);
+    if ( !iconset ) {
+      logger.error(`Failed to create iconset '${name}' from directory '${directory}'`);
+      return null;
+    }
+
+    this.iconsets.push(iconset);
+
+    return iconset;
+  }
 
   /**
    * @description Instantiate iconset class from a directory containing a metadata.json file.
    * @param {*} directory
    * @returns {Iconset|null}
    */
-  createFromDirectory(directory){
+  createFromDirectory(directory, aliases){
     logger.info(`Creating iconset from directory '${directory}'`);
 
     // check for metadata.json file
@@ -28,7 +59,8 @@ class Iconsets {
 
     const opts = {
       ...metadata,
-      directory: directory
+      aliases,
+      directory
     };
 
     return new Iconset(opts);
@@ -75,11 +107,44 @@ class Iconsets {
 class Iconset {
   constructor(opts){
     this.name = opts.name;
+    this.aliases = opts.aliases || [];
     this.label = opts.label || opts.name;
     this.directory = opts.directory;
     this.icons = opts.icons || [];
     this.faSet = opts.faSet || null;
     this.faVersion = opts.faVersion || null;
+
+    this.iconContents = new Map();
+  }
+
+  /**
+   * @description Get icon with its file contents.
+   * @param {String|Object} nameOrObj - The name of the icon or an icon object from this.icons array.
+   * @returns {Object|null} - Returns the icon object with its contents, or null if not found.
+   */
+  getIcon(nameOrObj){
+    if ( typeof nameOrObj === 'string' ){
+      nameOrObj = this.icons.find(icon => icon.name === nameOrObj);
+    }
+    if ( !nameOrObj?.name ) return null;
+    let icon = { ...nameOrObj };
+    if ( !icon.file ) {
+      logger.error(`Icon '${icon.name}' does not have a file associated with it in iconset '${this.name}'`);
+      return null;
+    }
+    if ( !this.iconContents.has(icon.name) ){
+      const iconFile = path.join(this.directory, 'icons', icon.file);
+      if ( !fs.existsSync(iconFile) ) {
+        logger.error(`Icon file '${icon.file}' for icon '${icon.name}' does not exist in iconset '${this.name}'`);
+        return null;
+      }
+      icon.contents = fs.readFileSync(iconFile, 'utf-8');
+      this.iconContents.set(icon.name, icon.contents);
+    } else {
+      icon.contents = this.iconContents.get(icon.name);
+    }
+
+    return icon;
   }
 
   /**
@@ -186,6 +251,10 @@ class Iconset {
     fs.writeFileSync(metadataFile, JSON.stringify(metadata, null, 2));
   }
 
+  /**
+   * @description Zip the iconset directory.
+   * @param {String} outputPath - The path where the zip file will be created.
+   */
   async zip(outputPath){
     let outputFile = path.join(outputPath, `${this.name}.zip`);
     logger.info(`Zipping iconset '${this.name}' to '${outputFile}'`);

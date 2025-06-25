@@ -7,7 +7,6 @@ const __dirname = path.dirname(__filename);
 class Config {
   constructor(){
     const ns = 'CORK_ICON_'
-
     this.iconSet = {
       directory: this.getEnv(`${ns}ICON_SET_DIRECTORY`, path.join(__dirname, '../iconsets')),
       gcBucket: this.getEnv(`${ns}ICON_SET_GC_BUCKET`, 'cork-icon')

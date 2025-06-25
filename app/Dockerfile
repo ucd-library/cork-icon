@@ -12,7 +12,7 @@ COPY io io
 RUN cd io/font-awesome-6.7 && npm install
 
 COPY app app
-RUN cd app && npm install
-RUN cd app && npm link @ucd-lib/cork-icon
+RUN cd app/src && npm install
+RUN cd app/src && npm link @ucd-lib/cork-icon
 
 CMD ["bash", "-c", "tail -f /dev/null"]
