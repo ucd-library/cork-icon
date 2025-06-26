@@ -60,9 +60,14 @@ class Iconsets {
     const limit = opts.limit || config.search.resultsLimitDefault;
     const results = [];
     for (const iconset of this.iconsets) {
-      if ( Array.isArray(opts.iconsets) && !opts.iconsets.includes(iconset.name) ) {
+      if ( Array.isArray(opts.iconsets) && !opts.iconsets.some(name => iconset.isNameOrAlias(name)) ) {
         continue;
       }
+
+      if ( Array.isArray(opts.excludeIconsets) && opts.excludeIconsets.some(name => iconset.isNameOrAlias(name)) ) {
+        continue;
+      }
+
       const iconResults = iconset.search(query, limit);
       for (const icon of iconResults) {
         results.push(icon);

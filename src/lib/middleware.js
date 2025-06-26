@@ -96,7 +96,13 @@ export default function iconApiMiddleware(opts = {}) {
         iconsetNames = iconsetNames.filter(name => name);
       }
 
-      const results = iconsets.search(query, { limit, iconsets: iconsetNames });
+      let excludeIconsets = req.query?.excludeIconsets || req.body?.excludeIconsets;
+      if (excludeIconsets) {
+        excludeIconsets = Array.isArray(excludeIconsets) ? excludeIconsets : excludeIconsets.split(',').map(s => s.trim());
+        excludeIconsets = excludeIconsets.filter(name => name);
+      }
+
+      const results = iconsets.search(query, { limit, iconsets: iconsetNames, excludeIconsets });
 
       return res.json({
         query: { q: query, limit, iconsets: iconsetNames },
