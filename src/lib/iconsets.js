@@ -5,12 +5,22 @@ import logger from './logger.js';
 import archiver from 'archiver';
 import config from './config.js';
 
+/**
+ * @description Iconsets class to manage iconsets and their icons.
+ */
 class Iconsets {
 
   constructor(){
     this.iconsets = [];
   }
 
+  /**
+   * @description Register an iconset by name. Will be added to the iconsets array.
+   * @param {String} name - The name of the iconset to register. This should match the directory name in the iconset directory.
+   * @param {Object} opts - Options for the iconset.
+   * @param {Array} opts.aliases - An array of aliases for the iconset. Optional.
+   * @returns
+   */
   register(name, opts={}){
     logger.info(`Registering iconset '${name}'`);
     if ( !name ) {
@@ -35,6 +45,48 @@ class Iconsets {
     this.iconsets.push(iconset);
 
     return iconset;
+  }
+
+  /**
+   * @description Search for icons across all registered iconsets.
+   * @param {String} query - The search term to use for searching icons.
+   * @param {Object} opts - Options for the search.
+   * @param {Number} opts.limit - The maximum number of results to return. Defaults to config.search.resultsLimitDefault.
+   * @param {Array} opts.iconsets - An array of iconset names to limit the search to. If not provided, searches all iconsets.
+   * @returns {Array} - An array of icon objects that match the search query.
+   */
+  search(query, opts={}){
+    if ( !query ) return [];
+    const limit = opts.limit || config.search.resultsLimitDefault;
+    const results = [];
+    for (const iconset of this.iconsets) {
+      if ( Array.isArray(opts.iconsets) && !opts.iconsets.includes(iconset.name) ) {
+        continue;
+      }
+      const iconResults = iconset.search(query, limit);
+      for (const icon of iconResults) {
+        results.push(icon);
+        if ( results.length >= limit ) break;
+      }
+      if ( results.length >= limit ) break;
+    }
+    return results;
+  }
+
+  /**
+   * @description Get icon from registered iconsets by full name (e.g. 'iconset.icon-name').
+   * @param {Sting} name
+   * @returns {Object|null} - Returns the icon object with its contents, or null if not found.
+   * @param {Object} opts - Options to pass to the iconset's getIcon method.
+   */
+  getIcon(name, opts={}){
+    if ( !name ) return null;
+    for (const iconset of this.iconsets) {
+      if ( !iconset.hasIcon(name) ) continue;
+      const parts = name.split('.');
+      const iconName = parts.pop();
+      return iconset.getIcon(iconName, opts);
+    }
   }
 
   /**
@@ -118,16 +170,88 @@ class Iconset {
   }
 
   /**
+   * @description Get basic information about the iconset.
+   * @returns {Object}
+   */
+  describe(){
+    return {
+      name: this.name,
+      label: this.label,
+      aliases: this.aliases,
+      iconCount: this.icons.length,
+      faSet: this.faSet,
+      faVersion: this.faVersion
+    }
+  }
+
+  /**
+   * @description Search for icons in the iconset based on a search term.
+   * @param {String} query - The search term to use for searching icons.
+   * @param {Number} limit - The maximum number of results to return. Defaults to config.search.resultsLimitDefault.
+   * @returns
+   */
+  search(query, limit){
+    if ( !query ) return [];
+    if ( !limit ) limit = config.search.resultsLimitDefault;
+
+    let re = new RegExp(query.replace(/[^a-zA-Z0-9]/g, ''), 'i');
+    const results = [];
+    for (const icon of this.icons) {
+      if ( icon.name.match(re) || icon.label.match(re) || icon.searchTerms.some(term => term.match(re)) ){
+        results.push(this.getIcon(icon.name, { excludeProps: ['searchTerms', 'file'] }));
+      }
+      if ( results.length >= limit ) break;
+    }
+    return results;
+  }
+
+  /**
+   * @description Check if the iconset name or any of its aliases match the provided name.
+   * @param {String} name
+   * @returns {Boolean}
+   */
+  isNameOrAlias(name){
+    if ( !name ) return false;
+    if ( this.name === name ) return true;
+    if ( this.aliases.includes(name) ) return true;
+    return false;
+  }
+
+  /**
+   * @description Check if the iconset has an icon with the given name.
+   * @param {String} name - Name of the icon with or without an iconset prefix. e.g. 'iconset.icon-name' or 'iconName'.
+   * @returns {Boolean}
+   */
+  hasIcon(name){
+    if ( !name ) return false;
+
+    // if name has a dot, it is in the format 'iconset.iconName'
+    if ( name.includes('.') ){
+      const parts = name.split('.');
+      const iconName = parts.pop();
+      const iconsetName = parts.join('.');
+      if ( this.isNameOrAlias(iconsetName) ){
+        return this.icons.some(icon => icon.name === iconName);
+      }
+      return false;
+    }
+
+    // otherwise, just check if the icon exists in this iconset
+    return this.icons.some(icon => icon.name === name);
+  }
+
+  /**
    * @description Get icon with its file contents.
    * @param {String|Object} nameOrObj - The name of the icon or an icon object from this.icons array.
    * @returns {Object|null} - Returns the icon object with its contents, or null if not found.
    */
-  getIcon(nameOrObj){
+  getIcon(nameOrObj, opts={}){
+    const excludeProps = opts.excludeProps || [];
     if ( typeof nameOrObj === 'string' ){
       nameOrObj = this.icons.find(icon => icon.name === nameOrObj);
     }
     if ( !nameOrObj?.name ) return null;
-    let icon = { ...nameOrObj };
+    let icon = { ...nameOrObj, iconset: this.name };
     if ( !icon.file ) {
       logger.error(`Icon '${icon.name}' does not have a file associated with it in iconset '${this.name}'`);
       return null;
@@ -138,12 +262,15 @@ class Iconset {
         logger.error(`Icon file '${icon.file}' for icon '${icon.name}' does not exist in iconset '${this.name}'`);
         return null;
       }
-      icon.contents = fs.readFileSync(iconFile, 'utf-8');
+      icon.contents = fs.readFileSync(iconFile, 'utf-8').replace(/[\r\n]+$/g, '');
       this.iconContents.set(icon.name, icon.contents);
     } else {
       icon.contents = this.iconContents.get(icon.name);
     }
 
+    for (const prop of excludeProps) {
+      delete icon[prop];
+    }
     return icon;
   }
 

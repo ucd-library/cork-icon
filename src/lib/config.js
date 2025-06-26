@@ -12,6 +12,11 @@ class Config {
       gcBucket: this.getEnv(`${ns}ICON_SET_GC_BUCKET`, 'cork-icon')
     };
 
+    this.search = {
+      resultsLimitDefault: this.getEnv(`${ns}SEARCH_RESULTS_LIMIT_DEFAULT`, 10),
+      resultsLimitMax: this.getEnv(`${ns}SEARCH_RESULTS_LIMIT_MAX`, 50)
+    }
+
     this.logger = {
       name: this.getEnv(`${ns}LOGGER_NAME`, 'cork-icon'),
       level: this.getEnv(`${ns}LOGGER_LEVEL`, '')

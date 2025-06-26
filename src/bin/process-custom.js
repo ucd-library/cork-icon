@@ -6,7 +6,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import logger from '../lib/logger.js';
-import config from '../lib/config.js';
 import iconsets from '../lib/iconsets.js';
 
 const __filename = fileURLToPath(import.meta.url);
