@@ -1,6 +1,3 @@
-import { IconStore as BaseStore } from '@ucd-lib/cork-icon';
-
-class IconStore extends BaseStore {}
-
+import { IconStore } from '@ucd-lib/cork-icon';
 const store = new IconStore();
 export default store;
