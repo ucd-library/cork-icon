@@ -26,5 +26,8 @@ return html`
   </ucd-theme-primary-nav>
 </ucd-theme-header>
 
+<cork-icon icon='fas.poop'></cork-icon>
+<cork-icon icon='fas.dog'></cork-icon>
+<cork-icon icon='fas.cat'></cork-icon>
 
 `;}

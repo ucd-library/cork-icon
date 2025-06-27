@@ -33,40 +33,36 @@ class IconModel extends BaseModel {
    * @param {boolean} opts.noDebounce - If true, don't debounce the request.
    * @returns
    */
-  async batch(names, opts){
+  async batch(names, opts = {}) {
+  if (!Array.isArray(names)) names = [names];
 
-    // filter to icons we don't have cached
-    const nameSet = new Set();
-    if ( !Array.isArray(names) ) names = [names];
-    names.forEach(name => {
-      if ( !this.store.getIcon(name) ) {
-        nameSet.add(name);
-      }
-    })
-
-    if ( opts?.noDebounce ) {
-      if ( nameSet.size ) {
-        await this.service.batch([...nameSet]);
-      }
-      return this.getFromCache(names);
-    }
-
-    // add new names to batch
-    nameSet.forEach(name => this.batchedIconNames.add(name));
-    if ( typeof this.debouncer instanceof Promise ) {
-      await this.debouncer;
-    } else {
-      this.debouncer = await (async () => {
-        await new Promise(resolve => setTimeout(resolve, this.debounceTime));
-        while ( this.batchedIconNames.size ) {
-          const names = [...this.batchedIconNames];
-          this.batchedIconNames.clear();
-          await this.service.batch(names);
-        }
-      })();
+  const missing = names.filter(name => !this.store.getIcon(name));
+  if (opts.noDebounce) {
+    if (missing.length) {
+      await this.service.batch(missing);
     }
     return this.getFromCache(names);
   }
+
+  // Add names to batch
+  missing.forEach(name => this.batchedIconNames.add(name));
+
+  // Setup a shared debounce promise
+  if (!this.debouncer) {
+    this.debouncer = new Promise(resolve => {
+      setTimeout(async () => {
+        const toFetch = [...this.batchedIconNames];
+        this.batchedIconNames.clear();
+        await this.service.batch(toFetch);
+        resolve(); // resolve all queued batch() calls
+        this.debouncer = null;
+      }, this.debounceTime);
+    });
+  }
+
+  await this.debouncer;
+  return this.getFromCache(names);
+}
 
   /**
    * @description Get cached icons from model store
@@ -82,6 +78,31 @@ class IconModel extends BaseModel {
       out.push(this.store.getIcon(name));
     });
     return out.filter(icon => icon);
+  }
+
+  /**
+   * @description Find an icon by its name in an array of icons.
+   * @param {String} name - The name of the icon to find, e.g. 'iconset.iconName'. Works with aliases.
+   * @param {Array} icons - An array of icon objects
+   * @returns {Object|null} - The icon object if found, otherwise null.
+   */
+  findIconInArray(name, icons=[]){
+    if ( !name ) return null;
+    if ( icons.find(icon => icon.name === name) ) {
+      return icons.find(icon => icon.name === name);
+    }
+
+    // check for aliases
+    const nameParts = name.split('.');
+    const iconName = nameParts.pop() || '';
+    const iconsetNameOrAlias = nameParts.filter(p => p).join('.');
+    if ( !iconsetNameOrAlias ) return null;
+    const iconset = this.store.data.iconsetMap.get(iconsetNameOrAlias);
+    if ( iconset && icons.find(icon => icon.iconset === iconset.name && icon.name === iconName) ) {
+      return icons.find(icon => icon.iconset === iconset.name && icon.name === iconName);
+    }
+
+    return null;
   }
 
 }
