@@ -21,7 +21,7 @@ export default class AppMain extends Mixin(LitElement)
     super();
     this.render = render.bind(this);
 
-    this._injectModel('AppStateModel');
+    this._injectModel('AppStateModel', 'IconModel');
   }
 
 }

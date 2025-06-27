@@ -53,7 +53,7 @@ export default function iconApiMiddleware(opts = {}) {
       if (!input) {
         return res.status(400).json({ error: 'No icons specified. Use "icons" query parameter or body property.' });
       }
-      let icons = (Array.isArray(req.query.icons) ? req.query.icons : req.query.icons.split(',').map(s => s.trim())).filter(icon => icon);
+      let icons = (Array.isArray(input) ? input : input.split(',').map(s => s.trim())).filter(icon => icon);
       icons = [...new Set(icons)];
 
       const output = {
@@ -107,7 +107,7 @@ export default function iconApiMiddleware(opts = {}) {
       return res.json({
         query: { q: query, limit, iconsets: iconsetNames },
         iconsets: Array.from(new Set(results.map(icon => icon.iconset))).map(name => iconsets.iconsets.find(iconset => iconset.name === name)?.describe() || { name }),
-        results
+        icons: results
       });
 
     } catch (e) {
