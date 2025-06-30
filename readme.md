@@ -9,7 +9,11 @@ This package allows you to use icons in any cork-app-utils application with the 
 # Usage
 
 ## Install and Load
-...
+
+```bash
+npm i @ucd-lib/cork-icon
+node ./node_modules/\@ucd-lib/cork-icon/bin/download.js 
+```
 
 ## Set Up Middleware
 

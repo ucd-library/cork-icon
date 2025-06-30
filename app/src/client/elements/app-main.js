@@ -40,9 +40,9 @@ export default class AppMain extends Mixin(LitElement)
     this.shuffleAnimals();
 
     // set interval to shuffle animals every 5 seconds
-    setInterval(() => {
-      this.shuffleAnimals();
-    }, 5000);
+    // setInterval(() => {
+    //   this.shuffleAnimals();
+    // }, 5000);
 
     this._injectModel('AppStateModel', 'IconModel');
   }

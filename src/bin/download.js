@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import gcs from '../lib/gcs.js';
 import logger from '../lib/logger.js';
 

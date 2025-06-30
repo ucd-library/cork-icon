@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * @description Converts FontAwesome iconset into standardized format for use with this package.
  * Will create iconsets and dist directories in the specified fontawesome directory.

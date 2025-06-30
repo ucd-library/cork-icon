@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * @description Update metadata file for a custom iconset based on icons available in a directory.
  */

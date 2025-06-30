@@ -85,6 +85,9 @@ function renderIconExamples(){
               <cork-icon icon="${icon}" size="large" class='${this.getRandomBrandColor()}'></cork-icon>
             `)}
           </div>
+          <div class='u-space-mt--medium'>
+            <button @click=${this.shuffleAnimals} class='btn'>Update Icons</button>
+          </div>
         </section>
         <section>
           <h3>Manual Fetch</h3>
