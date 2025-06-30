@@ -96,6 +96,42 @@ const store = new IconStore();
 export default store;
 ```
 
+## Display Icons
+Now, you can use the `cork-icon` element to show icons
+
+```html
+<!-- Specify icon using the icon attribute. fmt: iconset.iconName-->
+<cork-icon icon='fas.dog'></cork-icon>
+
+<!-- By default, if the icon property is updated, the icon will be fetched from the server, 
+ but you can postpone this until the icon enters the viewport by updating the fetch-strategy property-->
+<cork-icon icon='fas.cat' fetch-stategy='lazy'></cork-icon>
+
+<!-- Icons will inherit the color. Quickly assign colors using the brand classes. --> 
+ <cork-icon icon='fas.frog' class='quad'></cork-icon> <!-- A green frog. --> 
+```
+
+Complete list of properties:
+```js
+/**
+ * @property {String} icon - The name of the icon to display, e.g. 'iconSet.iconName'.
+ * @property {String} size - The keyword size of the icon.
+ * Uses predefined UCD theme spacer sizes: tiny, small, medium, large, huge.
+ * Size of icon can also be set using --cork-icon-size CSS variable.
+ * @property {Number} transformDegrees - Degrees to rotate the icon.
+ * Rotation can also be set using --cork-icon-rotate CSS variable.
+ * @property {Boolean} invisibleIfEmpty - If true and the icon data has not been loaded, no space will be taken up by the icon.
+ * @property {Boolean} autoHeight - If true, the height of the icon will be based on the svg viewBox. Otherwise, the icon will be square.
+ * @property {String} fetchStrategy - Strategy for fetching icon data. Cam be 'property-change' (default), 'manual', or 'lazy'.
+ * If 'property-change', the icon data will be fetched when the `icon` property changes.
+ * If 'manual', the icon data must be fetched manually using the `getIconData()` method.
+ * If 'lazy', the icon data will be fetched when the icon is in view using IntersectionObserver.
+ * @property {Boolean} disableFadeIn - If true, the icon will not fade in when it is first loaded.
+ * @property {Object} data - The icon data object from the API.
+ *
+ */
+```
+
 # Updating Icons
 
 All iconsets are stored in a [Google Cloud Storage bucket](https://console.cloud.google.com/storage/browser/cork-icon;tab=objects?project=digital-ucdavis-edu). This package downloads the zipped version of the iconsets from the `dist` directory.

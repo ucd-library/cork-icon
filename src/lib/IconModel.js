@@ -34,35 +34,35 @@ class IconModel extends BaseModel {
    * @returns
    */
   async batch(names, opts = {}) {
-  if (!Array.isArray(names)) names = [names];
+    if (!Array.isArray(names)) names = [names];
 
-  const missing = names.filter(name => !this.store.getIcon(name));
-  if (opts.noDebounce) {
-    if (missing.length) {
-      await this.service.batch(missing);
+    const missing = names.filter(name => !this.store.getIcon(name));
+    if (opts.noDebounce) {
+      if (missing.length) {
+        await this.service.batch(missing);
+      }
+      return this.getFromCache(names);
     }
+
+    // Add names to batch
+    missing.forEach(name => this.batchedIconNames.add(name));
+
+    // Setup a shared debounce promise
+    if (!this.debouncer) {
+      this.debouncer = new Promise(resolve => {
+        setTimeout(async () => {
+          const toFetch = [...this.batchedIconNames];
+          this.batchedIconNames.clear();
+          await this.service.batch(toFetch);
+          resolve(); // resolve all queued batch() calls
+          this.debouncer = null;
+        }, this.debounceTime);
+      });
+    }
+
+    await this.debouncer;
     return this.getFromCache(names);
   }
-
-  // Add names to batch
-  missing.forEach(name => this.batchedIconNames.add(name));
-
-  // Setup a shared debounce promise
-  if (!this.debouncer) {
-    this.debouncer = new Promise(resolve => {
-      setTimeout(async () => {
-        const toFetch = [...this.batchedIconNames];
-        this.batchedIconNames.clear();
-        await this.service.batch(toFetch);
-        resolve(); // resolve all queued batch() calls
-        this.debouncer = null;
-      }, this.debounceTime);
-    });
-  }
-
-  await this.debouncer;
-  return this.getFromCache(names);
-}
 
   /**
    * @description Get cached icons from model store
@@ -87,6 +87,9 @@ class IconModel extends BaseModel {
    * @returns {Object|null} - The icon object if found, otherwise null.
    */
   findIconInArray(name, icons=[]){
+    if ( !Array.isArray(icons) ){
+      icons = [icons];
+    }
     if ( !name ) return null;
     if ( icons.find(icon => icon.name === name) ) {
       return icons.find(icon => icon.name === name);
