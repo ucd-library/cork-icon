@@ -42,6 +42,7 @@ function createIconService(Base = Object) {
             body: ido
           }, 'search'),
           json: true,
+          checkCached: () => requestStore.get(id),
           onUpdate: resp => {
             this.store.set({id, ...resp}, requestStore);
             this.store.setConvenienceStores(resp?.payload);

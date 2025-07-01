@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev-server": "STEVE=foo CORK_ICON_ICON_SET_DIRECTORY=/cork-icon/io/gc-bucket/iconsets node server.js",
+    "dev-server": "CORK_ICON_ICON_SET_DIRECTORY=/cork-icon/io/gc-bucket/iconsets node server.js",
     "prod-server": "node server.js",
     "build-client": "webpack --config ./client/webpack.config.js",
     "watch-client": "webpack --config ./client/webpack.config.js --watch"
@@ -21,7 +21,7 @@
     "@ucd-lib/spa-router-middleware": "^0.2.3",
     "@ucd-lib/theme-elements": "^3.1.4",
     "@ucd-lib/theme-sass": "^6.0.1",
-    "express": "^5.1.0",
+    "express": "^4.21.2",
     "fs-extra": "^11.3.0",
     "lit": "^3.3.0",
     "webpack": "^5.99.9",

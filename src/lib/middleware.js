@@ -105,7 +105,7 @@ export default function iconApiMiddleware(opts = {}) {
       const results = iconsets.search(query, { limit, iconsets: iconsetNames, excludeIconsets });
 
       return res.json({
-        query: { q: query, limit, iconsets: iconsetNames },
+        query: { q: query, limit, iconsets: iconsetNames, excludeIconsets },
         iconsets: Array.from(new Set(results.map(icon => icon.iconset))).map(name => iconsets.iconsets.find(iconset => iconset.name === name)?.describe() || { name }),
         icons: results
       });

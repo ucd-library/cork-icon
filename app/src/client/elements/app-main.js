@@ -12,7 +12,8 @@ export default class AppMain extends Mixin(LitElement)
   static get properties() {
     return {
       page: {type: String},
-      shuffledAnimals: {type: Array}
+      shuffledAnimals: {type: Array},
+      searchOptions: {type: Object}
     }
   }
 
@@ -24,6 +25,7 @@ export default class AppMain extends Mixin(LitElement)
     super();
     this.render = render.bind(this);
     this.page = 'cork-icon';
+    this.searchOptions = {};
 
     this.animals = [
       'fas.dog',
@@ -45,6 +47,15 @@ export default class AppMain extends Mixin(LitElement)
     // }, 5000);
 
     this._injectModel('AppStateModel', 'IconModel');
+  }
+
+  _onSearchOptionsUpdate(prop, value){
+    this.searchOptions[prop] = value;
+    this.requestUpdate();
+  }
+
+  _onAppStateUpdate(e) {
+    this.page = e.page;
   }
 
   shuffleAnimals() {

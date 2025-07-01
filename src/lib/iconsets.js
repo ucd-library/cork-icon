@@ -60,7 +60,7 @@ class Iconsets {
     const limit = opts.limit || config.search.resultsLimitDefault;
     const results = [];
     for (const iconset of this.iconsets) {
-      if ( Array.isArray(opts.iconsets) && !opts.iconsets.some(name => iconset.isNameOrAlias(name)) ) {
+      if ( Array.isArray(opts.iconsets) && opts.iconsets.length && !opts.iconsets.some(name => iconset.isNameOrAlias(name)) ) {
         continue;
       }
 
@@ -203,7 +203,10 @@ class Iconset {
     const results = [];
     for (const icon of this.icons) {
       if ( icon.name.match(re) || icon.label.match(re) || icon.searchTerms.some(term => term.match(re)) ){
-        results.push(this.getIcon(icon.name, { excludeProps: ['searchTerms', 'file'] }));
+        const iconObj = this.getIcon(icon.name, { excludeProps: ['searchTerms', 'file'] });
+        if ( iconObj?.contents ) {
+          results.push(iconObj);
+        }
       }
       if ( results.length >= limit ) break;
     }

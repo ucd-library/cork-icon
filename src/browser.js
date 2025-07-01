@@ -7,9 +7,11 @@ import IconStore from './lib/IconStore.js';
 
 // elements
 import CorkIcon from './elements/cork-icon/cork-icon.js';
+import CorkIconSelect from './elements/cork-icon-select/cork-icon-select.js';
 
 export {
   CorkIcon,
+  CorkIconSelect,
   createIconService,
   IconModel,
   IconService,

@@ -12,7 +12,7 @@ class AppStateModelImpl extends AppStateModel {
 
   set(update) {
     if( update.location ) {
-      let page = update.location.path?.[0] ? update.location.path[0] : 'home';
+      let page = update.location.path?.[0] ? update.location.path[0] : 'cork-icon';
       update.page = page;
     }
 
