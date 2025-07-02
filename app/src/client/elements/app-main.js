@@ -12,8 +12,10 @@ export default class AppMain extends Mixin(LitElement)
   static get properties() {
     return {
       page: {type: String},
+      animals: {type: Array},
       shuffledAnimals: {type: Array},
-      searchOptions: {type: Object}
+      searchOptions: {type: Object},
+      selectedIcon: {type: Object}
     }
   }
 
@@ -26,6 +28,7 @@ export default class AppMain extends Mixin(LitElement)
     this.render = render.bind(this);
     this.page = 'cork-icon';
     this.searchOptions = {};
+    this.selectedIcon = null;
 
     this.animals = [
       'fas.dog',
@@ -40,11 +43,6 @@ export default class AppMain extends Mixin(LitElement)
       'fas.frog'
     ];
     this.shuffleAnimals();
-
-    // set interval to shuffle animals every 5 seconds
-    // setInterval(() => {
-    //   this.shuffleAnimals();
-    // }, 5000);
 
     this._injectModel('AppStateModel', 'IconModel');
   }

@@ -1,9 +1,9 @@
-# cork-icon (WIP)
+# cork-icon
 
-This package allows you to use icons in any cork-app-utils application with the following features:
-- Dynamically load only the icons you need in your SPA
+This package allows you to use icons in any [cork-app-utils](https://github.com/ucd-library/cork-app-utils) application with the following features:
+- Dynamically load only the icons you need in your SPA, including lazy loading
 - Seamlessly integrate custom icons with Font Awesome
-- Easily share icons between projects
+- Easily share custom icons between projects
 - Allow users to search for and select icons with a custom element
   
 # Usage
@@ -27,6 +27,7 @@ const app = express();
 app.use(express.json());
 
 // select some iconsets available in the Google Cloud bucket
+// https://console.cloud.google.com/storage/browser/cork-icon;tab=objects?project=digital-ucdavis-edu
 const iconsets = [
   { name: 'fontawesome-6.7-brands', aliases: ['fab']},
   { name: 'fontawesome-6.7-solid', aliases: ['fas']},
@@ -34,7 +35,6 @@ const iconsets = [
   'myCustomSet' // can just be string if you don't want to use aliases
 ];
 app.use('/icon', iconApiMiddleware({iconsets})); // endpoints will be available at /icon
-
 ```
 
 ## Set Up Model, Service, Store
@@ -83,7 +83,14 @@ const service = new IconService();
 export default service;
 ```
 
-If you need to update the fetch options for the service methods (like sending a header), you can override the `fetchOptions` method.
+If you need to update the fetch options for the service methods (like sending a header), you can override the `fetchOptions` method:
+```js
+  // service method will be 'batch' or 'search'
+  fetchOptions(opts, serviceMethod) {
+    opts.headers = addAuthHeader()
+    return opts;
+  }
+```
 
 If you need to use your own extended cork-app-utils base service, you can do:
 ```js
@@ -104,7 +111,7 @@ export default store;
 Now, you can use the `cork-icon` element to show icons
 
 ```html
-<!-- Specify icon using the icon attribute. fmt: iconset.iconName-->
+<!-- Specify icon using the icon attribute. fmt: iconsetNameOrAlias.iconName-->
 <cork-icon icon='fas.dog'></cork-icon>
 
 <!-- By default, if the icon property is updated, the icon will be fetched from the server, 
@@ -118,7 +125,7 @@ Now, you can use the `cork-icon` element to show icons
 Complete list of properties:
 ```js
 /**
- * @property {String} icon - The name of the icon to display, e.g. 'iconSet.iconName'.
+ * @property {String} icon - The name of the icon to display, e.g. 'iconsetNameOrAlias.iconName'.
  * @property {String} size - The keyword size of the icon.
  * Uses predefined UCD theme spacer sizes: tiny, small, medium, large, huge.
  * Size of icon can also be set using --cork-icon-size CSS variable.
@@ -151,11 +158,10 @@ All iconsets are stored in a [Google Cloud Storage bucket](https://console.cloud
 - Follow the instructions in **Updating Icons** section below
 
 ### Updating icons
-- Follow all instructions in local development section
-- Start demo app and bash into it - `docker compose up -d` `docker compose exec app bash`
-- Update icon metadata file with `node ./src/bin/process-custom.js ./io/gc-bucket/iconsets/<name-of-iconset>/` from container
+- Follow instructions in local development section to get app container up
+- Process iconset with `app/cmds/process-iconset.sh <name-of-iconset>`. This adds/removes icons from metadata file, and zips the iconset
 - Review the `metadata.json` file. Specifically, update the `label` and `searchTerms` properties for each icon to improve the icon search experience.
-- If any changes are made to `metadata.json`, run the command again to ensure these are reflected in the zipped version: `node ./src/bin/process-custom.js ./io/gc-bucket/iconsets/<name-of-iconset>/`
+- If any changes are made to `metadata.json`, run the command again to ensure these are reflected in the zipped version
 - Make sure icons look good in demo app (see demo app instructions)
 - To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine
 
@@ -163,16 +169,22 @@ All iconsets are stored in a [Google Cloud Storage bucket](https://console.cloud
 ### Uploading a new version of Font Awesome
 - npm install the new version to a directory in `io` 
 - Add directory to dockerfile, rebuild image
-- Start demo app and bash into it - `docker compose up -d` `docker compose exec app bash`
-- Run `node ./src/bin/process-fa.js <directory-you-created-in-io>`
+- Follow instructions in local development section to get app container up
+- Run `app/cmds/process-fa.sh <name-of-dir-in-io>`
 - `iconsets` and `dist` directories will be created in your io directory
 - To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine
 
 
 # Local development
 
-## Demo app instructions
-Get the demo app up with:
+If you need to work on the src code or edit an iconset, you will need to set up the demo app:
 - `cd app`
 - build local image with `./cmds/build-local-dev.sh`
 - get google cloud bucket reader key with `./cmds/get-gc-key.sh`
+- start app container with `cd cork-icon-local-dev && docker compose up -d`
+
+To start app server with: 
+- iconsets downloaded to your local host (`download-gc-bucket.sh`) run `app/cmds/start-server.sh dev`
+- iconsets downloaded at image build run `app/cmds/start-server.sh`
+
+If you need to develop the browser-side src code, run `app/cmds/watch-client.sh` to get the watch process going

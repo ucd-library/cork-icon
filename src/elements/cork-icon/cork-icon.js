@@ -6,7 +6,7 @@ import intersectionObserver from '../../lib/intersectionObserver.js';
 
 /**
  * @description A custom element for loading and displaying icons using the cork-icon api.
- * @property {String} icon - The name of the icon to display, e.g. 'iconSet.iconName'.
+ * @property {String} icon - The name of the icon to display, e.g. 'iconsetNameOrAlias.iconName'.
  * @property {String} size - The keyword size of the icon.
  * Uses predefined UCD theme spacer sizes: tiny, small, medium, large, huge.
  * Size of icon can also be set using --cork-icon-size CSS variable.

@@ -2,6 +2,7 @@ import '@ucd-lib/theme-elements/brand/ucd-theme-primary-nav/ucd-theme-primary-na
 import '@ucd-lib/theme-elements/brand/ucd-theme-header/ucd-theme-header.js';
 import '@ucd-lib/theme-elements/ucdlib/ucdlib-branding-bar/ucdlib-branding-bar.js';
 import '@ucd-lib/theme-elements/ucdlib/ucdlib-pages/ucdlib-pages.js';
+import {categoryBrands } from "@ucd-lib/theme-sass/colors.js";
 
 import { html, css } from 'lit';
 
@@ -54,7 +55,7 @@ function renderIconSelectExamples() {
     <div page-id='select'>
       <div class='search-container'>
         <div class='field-container'>
-          <label for='search-limit'>Limit</label>
+          <label for='search-limit'>attr: limit</label>
           <input
             id='search-limit'
             style='width: 100%;max-width: 100px;'
@@ -63,7 +64,7 @@ function renderIconSelectExamples() {
             type='number' />
         </div>
         <div class='field-container'>
-          <label for='search-iconsets'>Icon Sets</label>
+          <label for='search-iconsets'>attr: iconsets</label>
           <input
             id='search-iconsets'
             style='width: 100%;max-width: 200px;'
@@ -72,7 +73,7 @@ function renderIconSelectExamples() {
             type='text' />
         </div>
         <div class='field-container'>
-          <label for='search-exclude-iconsets'>Exclude Icon Sets</label>
+          <label for='search-exclude-iconsets'>attr: excludeIconsets</label>
           <input
             id='search-exclude-iconsets'
             style='width: 100%;max-width: 200px;'
@@ -82,16 +83,32 @@ function renderIconSelectExamples() {
         </div>
         <div class='field-container'>
           <cork-icon-select
-            label='cork-icon-select'
+            label='cork-icon-select element'
             limit=${this.searchOptions.limit || ''}
             iconsets=${this.searchOptions.iconsets || ''}
             exclude-iconsets=${this.searchOptions.excludeIconsets || ''}
             @icon-search-response=${e => console.log('icon-search-response', e.detail)}
             @icon-search-results=${e => console.log('icon-search-results', e.detail)}
-            @icon-select=${e => console.log('icon-select', e.detail)}
+            @icon-select=${e => this.selectedIcon = e.detail}
           ></cork-icon-select>
         </div>
       </div>
+      ${this.selectedIcon ? html`
+        <div class='u-space-mt--large'>
+          <h2>Selected Icon</h2>
+          <div>
+            ${Object.values(categoryBrands).map(color => html`
+              <cork-icon
+                icon='${this.selectedIcon.icon.iconset}.${this.selectedIcon.icon.name}'
+                size='huge'
+                class='${color.id}'
+                >
+              </cork-icon>
+            `)}
+          </div>
+        </div>
+        ` : html``}
+
     </div>
   `;
 }
