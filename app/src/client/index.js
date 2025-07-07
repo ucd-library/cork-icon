@@ -4,7 +4,12 @@ import "@ucd-lib/cork-app-utils";
 
 import { Registry } from '@ucd-lib/cork-app-utils';
 import './lib/models/AppStateModel.js';
-import './lib/models/IconModel.js';
+
+// Use extended models
+// import './lib/models/IconModel.js';
+
+// User default models
+import '@ucd-lib/cork-icon';
 
 Registry.ready();
 

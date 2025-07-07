@@ -26,6 +26,7 @@ export default (app) => {
       next({
         routes : routes,
         title: title,
+        corkIconConfig: {apiPath: '/api/icon'},
         logger: {
           logLevel: process?.env?.LOGGER_LEVEL || 'info'
         }

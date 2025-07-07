@@ -2,14 +2,14 @@ import { BaseModel } from '@ucd-lib/cork-app-utils';
 
 class IconModel extends BaseModel {
 
-  constructor() {
+  constructor(opts={}) {
     super();
 
-    this.debounceTime = 500;
+    this.debounceTime = opts.debounceTime || 500;
     this.debouncer = null;
     this.batchedIconNames = new Set();
 
-    this.register('IconModel');
+    this.register(opts.modelName || 'IconModel');
   }
 
   /**

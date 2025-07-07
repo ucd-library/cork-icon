@@ -4,6 +4,7 @@
 import IconModel from './lib/IconModel.js';
 import { createIconService, IconService } from './lib/IconService.js';
 import IconStore from './lib/IconStore.js';
+import { iconModel, iconService, iconStore } from './lib/IconModelImp.js';
 
 // elements
 import CorkIcon from './elements/cork-icon/cork-icon.js';
@@ -15,5 +16,8 @@ export {
   createIconService,
   IconModel,
   IconService,
-  IconStore
+  IconStore,
+  iconModel,
+  iconService,
+  iconStore
 };

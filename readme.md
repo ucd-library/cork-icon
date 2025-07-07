@@ -39,7 +39,23 @@ app.use('/icon', iconApiMiddleware({iconsets})); // endpoints will be available 
 
 ## Set Up Model, Service, Store
 
-Next, we need to set up our cork-app-utils model/service/store for interacting with the API.
+### Basic
+Simply importing the package will set everything up for you on the browser side:
+```js
+import '@ucd-lib/cork-icon';
+```
+
+You might need to override some default settings, in which case you can set `APP_CONFIG.corkIconConfig` or `corkIconConfig` on the window:
+
+| Property | Description |
+| -------- | ----------- |
+| `debounceTime` | Length of time model waits to batch calls |
+| `apiDomain` | Domain where api endpoint is located |
+| `apiPath`  | Path of middleware api |
+
+### Advanced
+
+If the basic set up doesn't work for you, you can always extend the base classes:
 
 Extend the BaseModel to assign your store and service:
 ```js

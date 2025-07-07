@@ -14,7 +14,7 @@ function createIconService(Base = Object) {
     constructor(...args) {
       super(...args);
       this.apiDomain = '';
-      this.apiPath = '/api/icon';
+      this.apiPath = '/icon';
     }
 
     /**
