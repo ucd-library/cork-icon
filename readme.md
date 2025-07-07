@@ -55,7 +55,7 @@ You might need to override some default settings, in which case you can set `APP
 
 ### Advanced
 
-If the basic set up doesn't work for you, you can always extend the base classes:
+If the basic set up doesn't work for you, you can always extend the base classes. You will want to disable the default instatiation with `corkIconConfig.noInstantiation`.
 
 Extend the BaseModel to assign your store and service:
 ```js
