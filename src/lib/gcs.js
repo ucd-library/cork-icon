@@ -13,10 +13,6 @@ const __dirname = path.dirname(__filename);
 class Gcs {
 
   async downloadAllIconsets(){
-    if ( !config.gc.keyFileExists ) {
-      logger.error('Google Cloud key file does not exist. Please set GOOGLE_APPLICATION_CREDENTIALS environment variable.');
-      return;
-    }
     logger.info(`Downloading iconsets from GCS bucket: ${config.iconSet.gcBucket} to ${config.iconSet.directory}`);
     const storage = new Storage();
 

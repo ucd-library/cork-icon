@@ -12,8 +12,9 @@ This package allows you to use icons in any [cork-app-utils](https://github.com/
 
 ```bash
 npm i @ucd-lib/cork-icon
-node ./node_modules/\@ucd-lib/cork-icon/bin/download.js 
 ```
+
+This will automatically download all iconsets in the `cork-icon` Google Cloud bucket in `digital-ucdavis-edu` project.
 
 ## Set Up Middleware
 

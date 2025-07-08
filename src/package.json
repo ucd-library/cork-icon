@@ -11,7 +11,8 @@
     }
   },
   "scripts": {
-    "download": "node bin/download.js"
+    "download": "node bin/download.js",
+    "postinstall": "npm run download"
   },
   "author": "spelkey@ucdavis.edu",
   "license": "ISC",
