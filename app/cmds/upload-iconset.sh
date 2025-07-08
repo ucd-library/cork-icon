@@ -38,3 +38,9 @@ else
   fi
 
 fi
+
+echo "Iconset uploaded successfully."
+
+# Update the manifest file
+echo "Updating manifest file..."
+./app/cmds/sync-manifest.sh
