@@ -117,6 +117,12 @@ function renderIconExamples(){
   return html`
     <div page-id='cork-icon'>
       <section>
+        <h2>Preloaded Icons</h2>
+        ${this.preloadedIcons.map(icon => html`
+          <cork-icon icon='${icon}' size='large' class='${this.getRandomBrandColor()}'></cork-icon>
+        `)}
+      </section>
+      <section>
         <h2>Styles</h2>
         <section>
           <h3>Sizes</h3>

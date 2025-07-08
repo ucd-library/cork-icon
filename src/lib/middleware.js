@@ -9,6 +9,7 @@ import iconsets from './iconsets.js';
  * @param {Array|String} opts.iconsets - An array of iconset names or a single iconset name to register. If not provided, defaults to an empty array.
  * @param {String} opts.iconsets.name - The name of the iconset.
  * @param {String} opts.iconsets.aliases - An array of aliases for the iconset. Optional.
+ * @param {Array|Boolean} opts.iconsets.preload - An array of icon names to preload or a boolean indicating whether to preload all icons. Defaults to false.
  * @returns
  */
 export default function iconApiMiddleware(opts = {}) {
@@ -16,14 +17,22 @@ export default function iconApiMiddleware(opts = {}) {
   // register iconsets and load icons
   if ( opts.iconsets ){
     for ( let iconset of Array.isArray(opts.iconsets) ? opts.iconsets : [opts.iconsets] ) {
-      if ( typeof iconset === 'string' ) {
-        iconsets.register(iconset);
-      } else if ( iconset?.name ) {
-        iconsets.register(iconset.name, {
-          aliases: iconset.aliases || []
-        });
+      let iconsetName = typeof iconset === 'string' ? iconset : iconset?.name;
+      let aliases = Array.isArray(iconset?.aliases) ? iconset.aliases : [];
+      if ( iconsetName ){
+        iconsets.register(iconsetName, {aliases});
       } else {
         logger.error('Iconset arg must be a string or an object with a name property');
+        continue;
+      }
+
+      // register preload icons
+      if ( iconset?.preload === true ) {
+        iconsets.preloadIconsets.push(iconsetName);
+      } else if ( Array.isArray(iconset?.preload) ) {
+        iconset.preload.forEach(iconName => {
+          iconsets.preloadIcons.push(`${iconsetName}.${iconName}`);
+        })
       }
     }
   } else {

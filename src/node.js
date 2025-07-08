@@ -4,10 +4,12 @@ import iconApiMiddleware from './lib/middleware.js';
 import { createIconService, IconService } from './lib/IconService.js';
 import IconStore from './lib/IconStore.js';
 import { iconModel, iconService, iconStore } from './lib/IconModelImp.js';
+import iconsets from './lib/iconsets.js';
 
 export {
   createIconService,
   iconApiMiddleware,
+  iconsets,
   IconModel,
   IconService,
   IconStore,

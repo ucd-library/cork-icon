@@ -12,6 +12,69 @@ class Iconsets {
 
   constructor(){
     this.iconsets = [];
+    this.preloadIcons = [];
+    this.preloadIconsets = [];
+  }
+
+  preloadIconScript(icons, iconsets){
+    icons = icons || this.preloadIcons;
+    iconsets = iconsets || this.preloadIconsets;
+    if ( !icons?.length && !iconsets?.length ) {
+      return ``;
+    }
+    logger.info(`Preloading ${icons.length} icons and ${iconsets.length} iconsets`);
+
+    const scriptContents = {
+      icons: [],
+      iconsets: [],
+      missingIcons: [],
+      missingIconsets: []
+    };
+
+    // get icons
+    for (const icon of icons) {
+      const iconObj = this.getIcon(icon, {excludeProps: ['searchTerms', 'file']});
+      if ( !iconObj ){
+        scriptContents.missingIcons.push(icon);
+        return;
+      }
+      scriptContents.icons.push(iconObj);
+      let iconset = this.getIconset(iconObj.iconset);
+      if ( !scriptContents.iconsets.some(i => i.name === iconset.name) ) {
+        scriptContents.iconsets.push(iconset.describe());
+      }
+    }
+
+    // get iconsets
+    for (const iconsetName of iconsets) {
+      const iconset = this.getIconset(iconsetName);
+      if ( !iconset ) {
+        scriptContents.missingIconsets.push(iconsetName);
+        continue;
+      }
+      if ( !scriptContents.iconsets.some(i => i.name === iconset.name) ) {
+        scriptContents.iconsets.push(iconset.describe());
+      }
+      const icons = iconset.getAllIcons({excludeProps: ['searchTerms', 'file']});
+      for (const icon of icons) {
+        if ( !scriptContents.icons.some(i => i.name === icon.name) ) {
+          scriptContents.icons.push(icon);
+        }
+      }
+    }
+
+    if ( scriptContents.missingIcons.length ) {
+      logger.warn(`${scriptContents.missingIcons.length} icons not found`, scriptContents.missingIcons);
+    }
+    if ( scriptContents.missingIconsets.length ) {
+      logger.warn(`${scriptContents.missingIconsets.length} iconsets not found`, scriptContents.missingIconsets);
+    }
+
+    return `
+      <script id="cork-icon-preload" type="application/json">
+        ${JSON.stringify(scriptContents)}
+      </script>
+    `
   }
 
   /**
@@ -92,6 +155,22 @@ class Iconsets {
       const iconName = parts.pop();
       return iconset.getIcon(iconName, opts);
     }
+  }
+
+  /**
+   * @description Get iconset by name or alias.
+   * This will return the first iconset that matches the name or alias.
+   * @param {*} nameOrAlias
+   * @returns {Iconset|null} - Returns the iconset object if found, or null if not found.
+   */
+  getIconset(nameOrAlias){
+    if ( !nameOrAlias ) return null;
+    for (const iconset of this.iconsets) {
+      if ( iconset.isNameOrAlias(nameOrAlias) ) {
+        return iconset;
+      }
+    }
+    return null;
   }
 
   /**
@@ -246,6 +325,21 @@ class Iconset {
 
     // otherwise, just check if the icon exists in this iconset
     return this.icons.some(icon => icon.name === name);
+  }
+
+  /**
+   * @description Get all icons in the iconset with their file contents.
+   * @param {Object} opts - Same options as getIcon method.
+   * @returns
+   */
+  getAllIcons(opts={}){
+    const excludeProps = opts.excludeProps || [];
+    const out = [];
+    for (const icon of this.icons) {
+      let iconObj = this.getIcon(icon.name, { excludeProps });
+      if ( iconObj ) out.push(iconObj);
+    }
+    return out;
   }
 
   /**

@@ -155,8 +155,45 @@ Complete list of properties:
  * If 'lazy', the icon data will be fetched when the icon is in view using IntersectionObserver.
  * @property {Boolean} disableFadeIn - If true, the icon will not fade in when it is first loaded.
  * @property {Object} data - The icon data object from the API.
- *
  */
+```
+
+## Preload Icons
+
+If you simply can't abide the half-second delay when loading icons, you can preload them in your [spa-router-middleware](https://github.com/UCDavisLibrary/spa-router-middleware) template.
+
+First, declare the icons you want to preload when setting up the middleware:
+```js
+const iconsets = [
+  // passing an array will only load the specified icons
+  { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']},
+
+  // passing 'true' will load the whole iconset. shouldn't be used on large iconsets.
+  { name: 'mySmallCustomSet', preload: true}
+];
+```
+
+Next, pass to template in SPA middleware:
+```js
+import { iconsets } from '@ucd-lib/cork-icon';
+spaMiddleware({
+  app,
+  template : (req, res, next) => {
+    next({
+      preloadedIcons: iconsets.preloadIconScript()
+    });
+  }
+});
+```
+
+Finally, put it in the head of template:
+```hbs
+<!doctype html>
+<html>
+  <head>
+    {{preloadedIcons}}
+  </head>
+</html>
 ```
 
 # Updating Icons

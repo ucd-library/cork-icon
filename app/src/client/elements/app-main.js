@@ -15,7 +15,8 @@ export default class AppMain extends Mixin(LitElement)
       animals: {type: Array},
       shuffledAnimals: {type: Array},
       searchOptions: {type: Object},
-      selectedIcon: {type: Object}
+      selectedIcon: {type: Object},
+      preloadedIcons: {type: Array}
     }
   }
 
@@ -27,6 +28,7 @@ export default class AppMain extends Mixin(LitElement)
     super();
     this.render = render.bind(this);
     this.page = 'cork-icon';
+    this.preloadedIcons = [];
     this.searchOptions = {};
     this.selectedIcon = null;
 
@@ -45,6 +47,16 @@ export default class AppMain extends Mixin(LitElement)
     this.shuffleAnimals();
 
     this._injectModel('AppStateModel', 'IconModel');
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    // preload icons from the document head if available
+    const preloadIcons = window?.document?.head?.querySelector?.('#cork-icon-preload');
+    if ( !preloadIcons ) return;
+    const data = JSON.parse(preloadIcons.innerText || '{}');
+    this.preloadedIcons = (data.icons || []).map(icon => `${icon.iconset}.${icon.name}`);
   }
 
   _onSearchOptionsUpdate(prop, value){

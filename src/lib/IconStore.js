@@ -17,6 +17,21 @@ class IconStore extends BaseStore {
     };
 
     this.events = {};
+
+    this.preloadIcons();
+  }
+
+  /**
+   * @description Preload icons from the document head if available.
+   * @returns
+   */
+  preloadIcons(){
+    if ( typeof window !== 'undefined' ){
+      const preloadIcons = window?.document?.head?.querySelector?.('#cork-icon-preload');
+      if ( !preloadIcons ) return;
+      const data = JSON.parse(preloadIcons.innerText || '{}');
+      this.setConvenienceStores(data);
+    }
   }
 
   /**

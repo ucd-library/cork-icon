@@ -11,9 +11,9 @@ const api = express.Router();
 // will be mounted at /api/icon
 const iconsets = [
   { name: 'fontawesome-6.7-brands', aliases: ['fab']},
-  { name: 'fontawesome-6.7-solid', aliases: ['fas']},
+  { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']},
   { name: 'fontawesome-6.7-regular', aliases: ['far']},
-  'foo'
+  { name: 'foo', preload: true}
 ];
 api.use('/icon', iconApiMiddleware({iconsets}));
 
