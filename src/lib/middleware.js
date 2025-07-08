@@ -20,19 +20,10 @@ export default function iconApiMiddleware(opts = {}) {
       let iconsetName = typeof iconset === 'string' ? iconset : iconset?.name;
       let aliases = Array.isArray(iconset?.aliases) ? iconset.aliases : [];
       if ( iconsetName ){
-        iconsets.register(iconsetName, {aliases});
+        iconsets.register(iconsetName, {aliases, preload: iconset?.preload});
       } else {
         logger.error('Iconset arg must be a string or an object with a name property');
         continue;
-      }
-
-      // register preload icons
-      if ( iconset?.preload === true ) {
-        iconsets.preloadIconsets.push(iconsetName);
-      } else if ( Array.isArray(iconset?.preload) ) {
-        iconset.preload.forEach(iconName => {
-          iconsets.preloadIcons.push(`${iconsetName}.${iconName}`);
-        })
       }
     }
   } else {

@@ -39,6 +39,7 @@ export default (app) => {
         title,
         bundle,
         preloadedIcons: iconsets.preloadIconScript()
+        //preloadedIcons: iconsets.preloadIconScript(['fab.google', 'fas.seedling'], ['foo'])
       });
     }
   });

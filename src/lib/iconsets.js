@@ -12,35 +12,49 @@ class Iconsets {
 
   constructor(){
     this.iconsets = [];
-    this.preloadIcons = [];
-    this.preloadIconsets = [];
   }
 
   /**
    * @description Return a json script tag with preloaded icons and iconsets.
    * @param {Array} icons - An array of icon names to preload.
-   * If not provided, uses this.preloadIcons, which gets set on middleware load.
    * @param {Array} iconsets - An array of iconset names to preload.
-   * If not provided, uses this.preloadIconsets, which gets set on middleware load.
+   * If both icons and iconsets params not provided, uses icons marked as preloaded at iconset registration.
    * @returns {String}
    */
   preloadIconScript(icons, iconsets){
-    icons = icons || this.preloadIcons;
-    iconsets = iconsets || this.preloadIconsets;
-    if ( !icons?.length && !iconsets?.length ) {
+
+    let _icons = [];
+    if ( !icons && !iconsets ){
+      _icons = this.iconsets.flatMap(iconset => iconset.getPreloadedIconNames());
+    } else {
+
+      if ( Array.isArray(icons) ){
+        _icons = icons;
+      }
+      if ( Array.isArray(iconsets) ){
+        for (const iconsetNameOrAlias of iconsets) {
+          const iconset = this.getIconset(iconsetNameOrAlias);
+          if ( !iconset ){
+            logger.warning(`Iconset '${iconsetNameOrAlias}' not registered. Skipping preload.`);
+            continue;
+          }
+          _icons.push(...iconset.getPreloadedIconNames());
+        }
+      }
+    }
+
+    if ( !_icons?.length ) {
       return ``;
     }
-    logger.info(`Preloading ${icons.length} icons and ${iconsets.length} iconsets`);
+    logger.info(`Preloading ${_icons.length} icons`);
 
     const scriptContents = {
       icons: [],
-      iconsets: [],
-      missingIcons: [],
-      missingIconsets: []
+      iconsets: []
     };
 
     // get icons
-    for (const icon of icons) {
+    for (const icon of _icons) {
       const iconObj = this.getIcon(icon, {excludeProps: ['searchTerms', 'file']});
       if ( !iconObj ){
         scriptContents.missingIcons.push(icon);
@@ -51,31 +65,6 @@ class Iconsets {
       if ( !scriptContents.iconsets.some(i => i.name === iconset.name) ) {
         scriptContents.iconsets.push(iconset.describe());
       }
-    }
-
-    // get iconsets
-    for (const iconsetName of iconsets) {
-      const iconset = this.getIconset(iconsetName);
-      if ( !iconset ) {
-        scriptContents.missingIconsets.push(iconsetName);
-        continue;
-      }
-      if ( !scriptContents.iconsets.some(i => i.name === iconset.name) ) {
-        scriptContents.iconsets.push(iconset.describe());
-      }
-      const icons = iconset.getAllIcons({excludeProps: ['searchTerms', 'file']});
-      for (const icon of icons) {
-        if ( !scriptContents.icons.some(i => i.name === icon.name) ) {
-          scriptContents.icons.push(icon);
-        }
-      }
-    }
-
-    if ( scriptContents.missingIcons.length ) {
-      logger.warn(`${scriptContents.missingIcons.length} icons not found`, scriptContents.missingIcons);
-    }
-    if ( scriptContents.missingIconsets.length ) {
-      logger.warn(`${scriptContents.missingIconsets.length} iconsets not found`, scriptContents.missingIconsets);
     }
 
     return `
@@ -90,6 +79,7 @@ class Iconsets {
    * @param {String} name - The name of the iconset to register. This should match the directory name in the iconset directory.
    * @param {Object} opts - Options for the iconset.
    * @param {Array} opts.aliases - An array of aliases for the iconset. Optional.
+   * @param {Array|Boolean} opts.preload - An array of icon names to preload or a boolean indicating whether to preload all icons. Defaults to false.
    * @returns
    */
   register(name, opts={}){
@@ -107,7 +97,7 @@ class Iconsets {
     }
 
     const directory = path.join(config.iconSet.directory, name);
-    const iconset = this.createFromDirectory(directory, opts.aliases);
+    const iconset = this.createFromDirectory(directory, opts.aliases, opts.preload);
     if ( !iconset ) {
       logger.error(`Failed to create iconset '${name}' from directory '${directory}'`);
       return null;
@@ -186,7 +176,7 @@ class Iconsets {
    * @param {*} directory
    * @returns {Iconset|null}
    */
-  createFromDirectory(directory, aliases){
+  createFromDirectory(directory, aliases, preload){
     logger.info(`Creating iconset from directory '${directory}'`);
 
     // check for metadata.json file
@@ -204,6 +194,7 @@ class Iconsets {
     const opts = {
       ...metadata,
       aliases,
+      preload,
       directory
     };
 
@@ -257,8 +248,26 @@ class Iconset {
     this.icons = opts.icons || [];
     this.faSet = opts.faSet || null;
     this.faVersion = opts.faVersion || null;
+    this.preload = opts.preload || false;
 
     this.iconContents = new Map();
+  }
+
+  /**
+   * @description Get the full names of icons that are preloaded in this iconset.
+   * @returns {Array}
+   */
+  getPreloadedIconNames(){
+    // load all icons if preload is true
+    if ( this.preload === true ){
+      return this.icons.map( icon => `${this.name}.${icon.name}`);
+    }
+
+    // if array, assume it is a subset of icons to preload
+    if ( Array.isArray(this.preload) ){
+      return this.preload.map(iconName => `${this.name}.${iconName}`);
+    }
+    return [];
   }
 
   /**
