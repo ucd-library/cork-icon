@@ -16,6 +16,14 @@ class Iconsets {
     this.preloadIconsets = [];
   }
 
+  /**
+   * @description Return a json script tag with preloaded icons and iconsets.
+   * @param {Array} icons - An array of icon names to preload.
+   * If not provided, uses this.preloadIcons, which gets set on middleware load.
+   * @param {Array} iconsets - An array of iconset names to preload.
+   * If not provided, uses this.preloadIconsets, which gets set on middleware load.
+   * @returns {String}
+   */
   preloadIconScript(icons, iconsets){
     icons = icons || this.preloadIcons;
     iconsets = iconsets || this.preloadIconsets;
