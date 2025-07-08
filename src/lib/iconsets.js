@@ -4,6 +4,7 @@ import fs from 'fs';
 import logger from './logger.js';
 import archiver from 'archiver';
 import config from './config.js';
+import LruStore from './LruStore.js';
 
 /**
  * @description Iconsets class to manage iconsets and their icons.
@@ -97,7 +98,7 @@ class Iconsets {
     }
 
     const directory = path.join(config.iconSet.directory, name);
-    const iconset = this.createFromDirectory(directory, opts.aliases, opts.preload);
+    const iconset = this.createFromDirectory(directory, opts);
     if ( !iconset ) {
       logger.error(`Failed to create iconset '${name}' from directory '${directory}'`);
       return null;
@@ -176,7 +177,7 @@ class Iconsets {
    * @param {*} directory
    * @returns {Iconset|null}
    */
-  createFromDirectory(directory, aliases, preload){
+  createFromDirectory(directory, opts={}){
     logger.info(`Creating iconset from directory '${directory}'`);
 
     // check for metadata.json file
@@ -191,14 +192,7 @@ class Iconsets {
       return null;
     }
 
-    const opts = {
-      ...metadata,
-      aliases,
-      preload,
-      directory
-    };
-
-    return new Iconset(opts);
+    return new Iconset({...metadata, ...opts, directory});
   }
 
   /**
@@ -250,7 +244,15 @@ class Iconset {
     this.faVersion = opts.faVersion || null;
     this.preload = opts.preload || false;
 
-    this.iconContents = new Map();
+    if ( opts.lruSize === -1 ) {
+      this.iconContents = new Map();
+    } else {
+      this.iconContents = new LruStore({
+        name: `iconset-${this.name}`,
+        maxSize: opts.lruSize || config.iconSet.lruSize
+      });
+    }
+
   }
 
   /**
@@ -375,7 +377,10 @@ class Iconset {
       logger.error(`Icon '${icon.name}' does not have a file associated with it in iconset '${this.name}'`);
       return null;
     }
-    if ( !this.iconContents.has(icon.name) ){
+    const iconContents = this.iconContents.get(icon.name);
+    if ( iconContents ){
+      icon.contents = iconContents;
+    } else {
       const iconFile = path.join(this.directory, 'icons', icon.file);
       if ( !fs.existsSync(iconFile) ) {
         logger.error(`Icon file '${icon.file}' for icon '${icon.name}' does not exist in iconset '${this.name}'`);
@@ -383,8 +388,6 @@ class Iconset {
       }
       icon.contents = fs.readFileSync(iconFile, 'utf-8').replace(/[\r\n]+$/g, '');
       this.iconContents.set(icon.name, icon.contents);
-    } else {
-      icon.contents = this.iconContents.get(icon.name);
     }
 
     for (const prop of excludeProps) {

@@ -9,7 +9,8 @@ class Config {
     const ns = 'CORK_ICON_'
     this.iconSet = {
       directory: this.getEnv(`${ns}ICON_SET_DIRECTORY`, path.join(__dirname, '../iconsets')),
-      gcBucket: this.getEnv(`${ns}ICON_SET_GC_BUCKET`, 'cork-icon')
+      gcBucket: this.getEnv(`${ns}ICON_SET_GC_BUCKET`, 'cork-icon'),
+      lruSize: this.getEnv(`${ns}ICON_SET_LRU_SIZE`, 1000)
     };
 
     this.search = {

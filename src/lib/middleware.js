@@ -20,7 +20,7 @@ export default function iconApiMiddleware(opts = {}) {
       let iconsetName = typeof iconset === 'string' ? iconset : iconset?.name;
       let aliases = Array.isArray(iconset?.aliases) ? iconset.aliases : [];
       if ( iconsetName ){
-        iconsets.register(iconsetName, {aliases, preload: iconset?.preload});
+        iconsets.register(iconsetName, {aliases, preload: iconset?.preload, lruSize: iconset?.lruSize});
       } else {
         logger.error('Iconset arg must be a string or an object with a name property');
         continue;
