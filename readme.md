@@ -201,40 +201,12 @@ Finally, put it in the head of template:
 
 All iconsets are stored in a [Google Cloud Storage bucket](https://console.cloud.google.com/storage/browser/cork-icon;tab=objects?project=digital-ucdavis-edu). This package downloads the zipped version of the iconsets from the `dist` directory.
 
-### Adding an icon to an existing custom iconset
-- Add the icon file to `gs://cork-icon/iconsets/<name-of-iconset>/icons` in digital-ucdavis-edu project
-- Download latest version of iconset to your host machine with `./app/cmds/download-gc-bucket <name-of-iconset>`.
-- Follow the instructions in **Updating Icons** section below
+Before doing work on the src code of this package or updating the iconsets, you will need to get the dev docker container up and running:
 
-### Creating a new custom iconset
-- Create the directory for your new iconset with `./app/cmds/create-iconset.sh <name-of-iconset>`, which will be placed in `./io/gc-bucket/iconsets/<name-of-iconset>`
-- Place icons into the `icons` directory of your iconset
-- Follow the instructions in **Updating Icons** section below
-
-### Updating icons
-- Follow instructions in local development section to get app container up
-- Process iconset with `app/cmds/process-iconset.sh <name-of-iconset>`. This adds/removes icons from metadata file, and zips the iconset
-- Review the `metadata.json` file. Specifically, update the `label` and `searchTerms` properties for each icon to improve the icon search experience.
-- If any changes are made to `metadata.json`, run the command again to ensure these are reflected in the zipped version
-- Make sure icons look good in demo app (see demo app instructions)
-- To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine
-
-
-### Uploading a new version of Font Awesome
-- npm install the new version to a directory in `io` 
-- Add directory to dockerfile, rebuild image
-- Follow instructions in local development section to get app container up
-- Run `app/cmds/process-fa.sh <name-of-dir-in-io>`
-- `iconsets` and `dist` directories will be created in your io directory
-- To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine
-
-
-# Local development
-
-If you need to work on the src code or edit an iconset, you will need to set up the demo app:
 - `cd app`
 - build local image with `./cmds/build-local-dev.sh`
 - get google cloud bucket reader key with `./cmds/get-gc-key.sh`
+  - if you need to update the iconsets, you will need access to the `cork-icon-bucket-writer` secret and write abilities to the bucket through your GC account.
 - start app container with `cd cork-icon-local-dev && docker compose up -d`
 
 To start app server with: 
@@ -242,3 +214,29 @@ To start app server with:
 - iconsets downloaded at image build run `app/cmds/start-server.sh`
 
 If you need to develop the browser-side src code, run `app/cmds/watch-client.sh` to get the watch process going
+
+## Adding an icon to an existing custom iconset
+- Add the icon file to `gs://cork-icon/iconsets/<name-of-iconset>/icons` in digital-ucdavis-edu project
+- Download latest version of iconset to your host machine with `./app/cmds/download-gc-bucket <name-of-iconset>`.
+- Follow the instructions in **Updating Icons** section below
+
+## Creating a new custom iconset
+- Create the directory for your new iconset with `./app/cmds/create-iconset.sh <name-of-iconset>`, which will be placed in `./io/gc-bucket/iconsets/<name-of-iconset>`
+- Place icons into the `icons` directory of your iconset
+- Follow the instructions in **Updating Icons** section below
+
+## Updating icons
+- Make sure the dev container is up
+- Process iconset with `app/cmds/process-iconset.sh <name-of-iconset>`. This adds/removes icons from metadata file, and zips the iconset
+- Review the `metadata.json` file. Specifically, update the `label` and `searchTerms` properties for each icon to improve the icon search experience.
+- If any changes are made to `metadata.json`, run the command again to ensure these are reflected in the zipped version
+- Make sure icons look good in demo app (see demo app instructions)
+- To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine
+
+## Uploading a new version of Font Awesome
+- npm install the new version to a directory in `io` 
+- Add directory to dockerfile, rebuild image
+- Follow instructions in local development section to get app container up
+- Run `app/cmds/process-fa.sh <name-of-dir-in-io>`
+- `iconsets` and `dist` directories will be created in your io directory
+- To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine

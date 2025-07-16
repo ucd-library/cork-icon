@@ -20,4 +20,4 @@ if [ ! -d "$ICONSET_DIR" ]; then
 fi
 APP_DIR="app/cork-icon-local-dev"
 
-cd "$APP_DIR" && docker compose exec app node ./src/bin/process-custom.js "$ICONSET_NAME"
+cd "$APP_DIR" && docker compose exec app node ./src/bin/process-custom.js "$ICONSET_DIR"

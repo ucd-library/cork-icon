@@ -13,7 +13,7 @@ const iconsets = [
   { name: 'fontawesome-6.7-brands', aliases: ['fab']},
   { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']},
   { name: 'fontawesome-6.7-regular', aliases: ['far']},
-  { name: 'foo', preload: true}
+  { name: 'ucdlib-core', preload: true}
 ];
 api.use('/icon', iconApiMiddleware({iconsets}));
 
