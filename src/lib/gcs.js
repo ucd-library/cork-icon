@@ -86,6 +86,7 @@ class Gcs {
 
     logger.info(`Found ${files.length} files in manifest.`);
 
+    let fileErrorCount = 0;
     for (const file of files) {
 
       const url = `https://storage.googleapis.com/${bucket}/${prefix}${file}`;
@@ -98,45 +99,54 @@ class Gcs {
         continue;
       }
 
-if (localPath.endsWith('.zip')) {
-  const baseName = path.basename(localPath, '.zip');
-  const unzipTarget = path.join(path.dirname(localPath), baseName);
-  await fsp.mkdir(unzipTarget, { recursive: true });
-  logger.info(`Unzipping file: ${unzipTarget}`);
+      if (localPath.endsWith('.zip')) {
+        const baseName = path.basename(localPath, '.zip');
+        const unzipTarget = path.join(path.dirname(localPath), baseName);
+        await fsp.mkdir(unzipTarget, { recursive: true });
+        logger.info(`Unzipping file: ${unzipTarget}`);
 
-  await new Promise((resolve, reject) => {
-    fs.createReadStream(localPath)
-      .pipe(unzipper.Parse())
-      .on('entry', async function (entry) {
-        logger.info(`Extracting: ${entry.path} from ${localPath}`);
-        const filePath = path.join(unzipTarget, entry.path);
+        let zipFileErrorCount = 0;
+        await new Promise((resolve, reject) => {
+          fs.createReadStream(localPath)
+            .pipe(unzipper.Parse())
+            .on('entry', async function (entry) {
+              logger.info(`Extracting: ${entry.path} from ${localPath}`);
+              const filePath = path.join(unzipTarget, entry.path);
 
-        try {
-          if (entry.type === 'Directory') {
-            await fsp.mkdir(filePath, { recursive: true });
-            entry.autodrain();
-          } else {
-            await fsp.mkdir(path.dirname(filePath), { recursive: true });
-            entry.pipe(fs.createWriteStream(filePath));
-          }
-        } catch (err) {
-          logger.error(`Failed to extract ${entry.path}: ${err.message}`);
-          entry.autodrain();
-        }
-      })
-      .on('error', err => {
-        logger.error('Unzip error:', err);
-        reject(err);
-      })
-      .on('close', () => {
-        logger.info('Unzip complete');
-        resolve();
-      });
-  });
-}
+              try {
+                if (entry.type === 'Directory') {
+                  await fsp.mkdir(filePath, { recursive: true });
+                  entry.autodrain();
+                } else {
+                  await fsp.mkdir(path.dirname(filePath), { recursive: true });
+                  entry.pipe(fs.createWriteStream(filePath));
+                }
+              } catch (err) {
+                logger.error(`Failed to extract ${entry.path}: ${err.message}`);
+                entry.autodrain();
+                fileErrorCount++;
+                zipFileErrorCount++;
+              }
+            })
+            .on('error', err => {
+              logger.error('Unzip error:', err);
+              reject(err);
+            })
+            .on('close', () => {
+              logger.info('Unzip complete');
+              if (zipFileErrorCount > 0) {
+                logger.warn(`Encountered ${zipFileErrorCount} errors while extracting files from ${localPath}`);
+              }
+              resolve();
+            });
+        });
+      }
     }
 
-    logger.info('All iconsets downloaded and unzipped successfully.');
+    logger.info(`Downloaded and processed ${files.length} iconsets from cork-icon GCS bucket.`);
+    if (fileErrorCount > 0) {
+      logger.warn(`Unabled to unzip ${fileErrorCount} total icon files. Check logs for details.`);
+    }
   }
 
 }
