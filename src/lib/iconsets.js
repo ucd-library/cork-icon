@@ -47,7 +47,7 @@ class Iconsets {
     if ( !_icons?.length ) {
       return ``;
     }
-    logger.info(`Preloading ${_icons.length} icons`);
+    logger.debug(`Preloading ${_icons.length} icons`);
 
     const scriptContents = {
       icons: [],
