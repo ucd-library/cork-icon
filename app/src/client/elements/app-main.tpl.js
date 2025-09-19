@@ -96,6 +96,36 @@ function renderOtherElements(){
           <cork-icon-button icon='fas.minus' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}></cork-icon-button>
         </div>
       </section>
+
+      <section>
+        <h3>cork-prefixed-icon-button</h3>
+        <p>Style Variants</p>
+        <div class='flex'>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' @click=${e => console.log(`color: ${e.target.color}`)}>Like</cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' text='Like' disabled @click=${e => console.log(`color: ${e.target.color}`)}></cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' text='Like' color='dark' @click=${e => console.log(`color: ${e.target.color}`)}></cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' color='dark' disabled @click=${e => console.log(`color: ${e.target.color}`)}>Like</cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' text='Like' color='medium' @click=${e => console.log(`color: ${e.target.color}`)}></cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' text='Like' color='medium' disabled @click=${e => console.log(`color: ${e.target.color}`)}></cork-prefixed-icon-button>
+        </div>
+      </section>
+      <section>
+        <p>Style Variants with href</p>
+        <div class='flex'>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' text='Like' href='/'></cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' text='Like' color='dark' href='/'></cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' text='Like' color='medium' href='/'></cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' text='Like' basic href='/'></cork-prefixed-icon-button>
+        </div>
+      </section>
+      <section>
+        <p>With icon fetch strategy</p>
+        <div class='flex'>
+          <cork-prefixed-icon-button icon='fas.file-pdf' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}>Download</cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.file-excel' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}>Download</cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.file-word' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}>Download</cork-prefixed-icon-button>
+        </div>
+      </section>
     </div>
   `;
 }

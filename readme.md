@@ -175,6 +175,20 @@ This package provides some pre-styled components that use icons at their core:
  */
 ```
 
+### cork-prefixed-icon-button
+```js
+/**
+ * @description Component for displaying a button with a prefixed icon
+ * @prop {String} text - the text to display in the button. Can also be set via slot.
+ * @prop {String} color - the color theme of the button. Can be 'dark', 'medium', or 'light'.
+ * @prop {String} icon - the icon to display in the button. Passed to cork-icon as the 'icon' prop.
+ * @prop {String} iconFetchStrategy - optional. Passed to cork-icon as the 'fetch-strategy' prop.
+ * @prop {String} href - optional. If set, the button will be a link to the provided href. Otherwise, a button element will be rendered.
+ * @prop {Boolean} disabled - optional. If true, the button will be disabled.
+ * @prop {String} buttonType - optional. The type attribute for the button element. Defaults to 'button'.
+ */
+```
+
 ## Preload Icons
 
 If you simply can't abide the half-second delay when loading icons, you can preload them in your [spa-router-middleware](https://github.com/UCDavisLibrary/spa-router-middleware) template.
