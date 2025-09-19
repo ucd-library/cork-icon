@@ -10,7 +10,7 @@ export default (app) => {
   const bundle = `
     <script src='/js/bundle.js?v=${(new Date()).toISOString()}'></script>
   `;
-  const routes = ['select'];
+  const routes = ['select', 'other-elements'];
   const title = 'Cork Icon Demo';
 
   spaMiddleware({

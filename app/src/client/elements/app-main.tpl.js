@@ -19,6 +19,12 @@ export function styles() {
       gap: 1rem;
       flex-wrap: wrap;
     }
+    .flex {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
   `;
 
   return [elementStyles];
@@ -34,6 +40,7 @@ return html`
     <ucd-theme-primary-nav>
       <a href="/">Icon Element</a>
       <a href="/select">Icon Select Element</a>
+      <a href="/other-elements">Other Elements</a>
     </ucd-theme-primary-nav>
   </ucd-theme-header>
 
@@ -44,11 +51,54 @@ return html`
       attr-for-selected='page-id'>
       ${renderIconExamples.call(this)}
       ${renderIconSelectExamples.call(this)}
+      ${renderOtherElements.call(this)}
     </ucdlib-pages>
 
   </div>
 
 `;}
+
+function renderOtherElements(){
+  return html`
+    <div page-id='other-elements'>
+      <h2>Other Elements</h2>
+      <section>
+        <h3>cork-icon-button</h3>
+        <p>Style Variants</p>
+        <div class='flex'>
+          <cork-icon-button icon='fas.thumbs-up' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' disabled @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='dark' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='dark' disabled @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='medium' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='medium' disabled @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='white' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='white' disabled @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' basic @click=${e => console.log(`basic boolean: true`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' basic disabled @click=${e => console.log(`basic boolean: true`)}></cork-icon-button>
+        </div>
+      </section>
+      <section>
+        <p>Style Variants with href</p>
+        <div class='flex'>
+          <cork-icon-button icon='fas.thumbs-up' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='dark' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='medium' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='white' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' basic href='/'></cork-icon-button>
+        </div>
+      </section>
+      <section>
+        <p>With icon fetch strategy</p>
+        <div class='flex'>
+          <cork-icon-button icon='fas.thumbs-down' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.plus' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.minus' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}></cork-icon-button>
+        </div>
+      </section>
+    </div>
+  `;
+}
 
 function renderIconSelectExamples() {
   return html`

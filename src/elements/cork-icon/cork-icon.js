@@ -77,7 +77,9 @@ export default class CorkIcon extends Mixin(LitElement)
     // validate fetch strategy property
     if ( props.has('fetchStrategy') ){
       if ( !this.allowedFetchStrategies.includes(this.fetchStrategy) ) {
-        this.logger.warn(`Invalid fetch strategy "${this.fetchStrategy}" for <cork-icon>. Using default "${this.defaultFetchStrategy}".`);
+        if ( this.fetchStrategy ){
+          this.logger.warn(`Invalid fetch strategy "${this.fetchStrategy}" for <cork-icon>. Using default "${this.defaultFetchStrategy}".`);
+        }
         this.fetchStrategy = this.defaultFetchStrategy;
       }
     }

@@ -159,6 +159,22 @@ Complete list of properties:
  */
 ```
 
+## Other Custom Elements
+This package provides some pre-styled components that use icons at their core:
+
+### cork-icon-button
+```js
+/**
+ * @description An icon button component. Use --cork-icon-button-size variable to set the size of the element.
+ * @property {String} color - The color theme of the button. Can be 'dark', 'medium', 'light', or 'white'.
+ * @property {Boolean} basic - If true, the button will have no background or border. Overrides color property.
+ * @property {String} icon - The icon to display in the button. Must be a valid icon slug.
+ * @property {String} iconFetchStrategy - The fetch strategy to use for the icon. Passed to the cork-icon element.
+ * @property {String} href - Optional. If set, the button will be a link to the provided href. Otherwise, a button element will be rendered that will emit a click event.
+ * @property {Boolean} disabled - Optional. If true, the button will be disabled.
+ */
+```
+
 ## Preload Icons
 
 If you simply can't abide the half-second delay when loading icons, you can preload them in your [spa-router-middleware](https://github.com/UCDavisLibrary/spa-router-middleware) template.
