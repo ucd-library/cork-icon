@@ -15,4 +15,6 @@ COPY app app
 RUN cd app/src && npm install
 RUN cd app/src && npm link @ucd-lib/cork-icon
 
+RUN cd app/src && npm run build-client
+
 CMD ["bash", "-c", "tail -f /dev/null"]
