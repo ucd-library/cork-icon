@@ -15,4 +15,3 @@ services:
       - ../../secrets:/cork-icon/secrets
       - ../src:/cork-icon/app/src
       - /cork-icon/app/src/node_modules
-      - /cork-icon/app/src/client/public/js

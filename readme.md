@@ -208,6 +208,7 @@ Before doing work on the src code of this package or updating the iconsets, you 
 - get google cloud bucket reader key with `./cmds/get-gc-key.sh`
   - if you need to update the iconsets, you will need access to the `cork-icon-bucket-writer` secret and write abilities to the bucket through your GC account.
 - start app container with `cd cork-icon-local-dev && docker compose up -d`
+- build client with `app/cmds/build-client.sh`
 
 To start app server with: 
 - iconsets downloaded to your local host (`download-gc-bucket.sh`) run `app/cmds/start-server.sh dev`
