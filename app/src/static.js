@@ -1,7 +1,7 @@
 import path from 'path';
 import spaMiddleware from '@ucd-lib/spa-router-middleware';
 import { fileURLToPath } from 'url';
-import { iconsets } from '@ucd-lib/cork-icon';
+import { iconsets, preload } from '@ucd-lib/cork-icon';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -39,6 +39,10 @@ export default (app) => {
         title,
         bundle,
         preloadedIcons: iconsets.preloadIconScript()
+        // preloadedIcons: preload([
+        //   { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']},
+        //   { name: 'ucdlib-core'}
+        // ])
         //preloadedIcons: iconsets.preloadIconScript(['fab.google', 'fas.seedling'], ['foo'])
       });
     }

@@ -38,6 +38,8 @@ const iconsets = [
 app.use('/icon', iconApiMiddleware({iconsets})); // endpoints will be available at /icon
 ```
 
+**If you want to bypass the icon api all together and preload just the icons you need in the spa-middleware template, see the [Preload Icons section](#preload-icons) below.**
+
 ## Set Up Model, Service, Store
 
 ### Basic
@@ -191,6 +193,7 @@ This package provides some pre-styled components that use icons at their core:
 
 ## Preload Icons
 
+### In Conjunction with the API
 If you simply can't abide the half-second delay when loading icons, you can preload them in your [spa-router-middleware](https://github.com/UCDavisLibrary/spa-router-middleware) template.
 
 First, declare the icons you want to preload when setting up the middleware:
@@ -206,7 +209,9 @@ const iconsets = [
 
 Next, pass to template in SPA middleware:
 ```js
+import spaMiddleware from '@ucd-lib/spa-router-middleware';
 import { iconsets } from '@ucd-lib/cork-icon';
+
 spaMiddleware({
   app,
   template : (req, res, next) => {
@@ -225,6 +230,29 @@ Finally, put it in the head of template:
     {{preloadedIcons}}
   </head>
 </html>
+```
+
+### Without the API
+If you don't need to dynamically load icons with the API, you can skip the api middleware step, and load the icons directly in your SPA middleware template:
+
+```js
+import spaMiddleware from '@ucd-lib/spa-router-middleware';
+import { preload } from '@ucd-lib/cork-icon';
+
+spaMiddleware({
+  app,
+  template : (req, res, next) => {
+    next({
+      preloadedIcons: preload([
+        // load just specified icons
+        { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']}, 
+
+        // load a whole (hopefully small) set
+        { name: 'ucdlib-core'} 
+      ])
+    });
+  }
+});
 ```
 
 # Updating Icons

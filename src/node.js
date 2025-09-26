@@ -5,6 +5,7 @@ import { createIconService, IconService } from './lib/IconService.js';
 import IconStore from './lib/IconStore.js';
 import { iconModel, iconService, iconStore } from './lib/IconModelImp.js';
 import iconsets from './lib/iconsets.js';
+import preload from './lib/preload.js';
 
 export {
   createIconService,
@@ -15,5 +16,6 @@ export {
   IconStore,
   iconModel,
   iconService,
-  iconStore
+  iconStore,
+  preload
 };
