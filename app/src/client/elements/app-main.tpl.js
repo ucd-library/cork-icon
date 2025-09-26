@@ -81,7 +81,7 @@ function renderOtherElements(){
       <section>
         <p>Style Variants with href</p>
         <div class='flex'>
-          <cork-icon-button icon='fas.thumbs-up' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' href='/' link-aria-label='Like'></cork-icon-button>
           <cork-icon-button icon='fas.thumbs-up' color='dark' href='/'></cork-icon-button>
           <cork-icon-button icon='fas.thumbs-up' color='medium' href='/'></cork-icon-button>
           <cork-icon-button icon='fas.thumbs-up' color='white' href='/'></cork-icon-button>

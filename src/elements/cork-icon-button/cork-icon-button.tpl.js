@@ -1,4 +1,5 @@
 import { html, css } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import '../cork-icon/cork-icon.js';
 
 export function styles() {
@@ -125,7 +126,7 @@ export function render() {
   const containerClass = `container color--${this.color} ${this.basic ? 'basic' : 'round'}`;
   if ( this.href && !this.disabled ) {
     return html`
-      <a href='${this.href}' class='${containerClass}'>
+      <a href='${this.href}' class='${containerClass}' aria-label=${ifDefined(this.linkAriaLabel ? this.linkAriaLabel : undefined)}>
         <cork-icon icon=${this.icon} fetch-strategy=${this.iconFetchStrategy}></cork-icon>
       </a>
     `;

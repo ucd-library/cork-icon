@@ -174,6 +174,7 @@ This package provides some pre-styled components that use icons at their core:
  * @property {String} iconFetchStrategy - The fetch strategy to use for the icon. Passed to the cork-icon element.
  * @property {String} href - Optional. If set, the button will be a link to the provided href. Otherwise, a button element will be rendered that will emit a click event.
  * @property {Boolean} disabled - Optional. If true, the button will be disabled.
+ * @property {String} linkAriaLabel - Optional. If href is set, this will be used as the aria-label for the link.
  */
 ```
 

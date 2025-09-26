@@ -9,6 +9,7 @@ import {render, styles} from "./cork-icon-button.tpl.js";
  * @property {String} iconFetchStrategy - The fetch strategy to use for the icon. Passed to the cork-icon element.
  * @property {String} href - Optional. If set, the button will be a link to the provided href. Otherwise, a button element will be rendered.
  * @property {Boolean} disabled - Optional. If true, the button will be disabled.
+ * @property {String} linkAriaLabel - Optional. If href is set, this will be used as the aria-label for the link.
  */
 export default class CorkIconButton extends LitElement {
 
@@ -19,7 +20,8 @@ export default class CorkIconButton extends LitElement {
       icon: { type: String },
       iconFetchStrategy: { type: String, attribute: 'icon-fetch-strategy' },
       href: { type: String },
-      disabled: { type: Boolean }
+      disabled: { type: Boolean },
+      linkAriaLabel: { type: String, attribute: 'link-aria-label' }
     }
   }
 
@@ -36,6 +38,7 @@ export default class CorkIconButton extends LitElement {
     this.href = '';
     this.iconFetchStrategy = '';
     this.disabled = false;
+    this.linkAriaLabel = '';
   }
 
   willUpdate(props){
