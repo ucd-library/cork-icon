@@ -5,22 +5,26 @@ export function styles() {
   const elementStyles = css`
     :host {
       display: inline-block;
+      font-size: 1rem;
+    }
+    cork-icon {
+      --cork-icon-size: 1em;
     }
     .container {
       display: flex;
       align-items: center;
       cursor: pointer;
       text-decoration: none;
-      gap: .5rem;
-      font-size: 1rem;
+      gap: .5em;
+      font-size: 1em;
       font-weight: 700;
-      border-radius: 2.5rem;
-      padding: .5rem 1rem;
+      border-radius: 2.5em;
+      padding: .5em 1em;
       border: none;
       box-shadow: none;
       transition: background-color .2s, color .2s;
       box-sizing: border-box;
-      line-height: 1.6rem;
+      line-height: 1.6em;
     }
     .container.color--light {
       background: var(--ucd-blue-40, #DBEAF7);

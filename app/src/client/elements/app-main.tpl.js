@@ -126,6 +126,15 @@ function renderOtherElements(){
           <cork-prefixed-icon-button icon='fas.file-word' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}>Download</cork-prefixed-icon-button>
         </div>
       </section>
+      <section>
+        <p>Customize font size</p>
+        <div class='flex'>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' style=${'font-size: 1rem;'}>Like</cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' style=${'font-size: .875rem;'}>Like</cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' style=${'font-size: .875rem;'} href='/'>Like</cork-prefixed-icon-button>
+          <cork-prefixed-icon-button icon='fas.thumbs-up' style=${'font-size: 1.5rem;'}>Like</cork-prefixed-icon-button>
+        </div>
+      </section>
     </div>
   `;
 }
