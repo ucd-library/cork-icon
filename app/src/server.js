@@ -10,9 +10,9 @@ const api = express.Router();
 // set up the icon API middleware
 // will be mounted at /api/icon
 const iconsets = [
-  { name: 'fontawesome-6.7-brands', aliases: ['fab']},
-  { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']},
-  { name: 'fontawesome-6.7-regular', aliases: ['far']},
+  { name: 'fontawesome-7.0-brands', aliases: ['fab']},
+  { name: 'fontawesome-7.0-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']},
+  { name: 'fontawesome-7.0-regular', aliases: ['far']},
   { name: 'ucdlib-core', preload: true}
 ];
 api.use('/icon', iconApiMiddleware({iconsets}));

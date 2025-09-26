@@ -291,7 +291,7 @@ If you need to develop the browser-side src code, run `app/cmds/watch-client.sh`
 - Review the `metadata.json` file. Specifically, update the `label` and `searchTerms` properties for each icon to improve the icon search experience.
 - If any changes are made to `metadata.json`, run the command again to ensure these are reflected in the zipped version
 - Make sure icons look good in demo app (see demo app instructions)
-- To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine
+- To copy iconset to GC bucket, from your iconset directory. run `../../../../app/cmds/upload-iconset.sh .`
 
 ## Uploading a new version of Font Awesome
 - npm install the new version to a directory in `io` 
@@ -299,4 +299,4 @@ If you need to develop the browser-side src code, run `app/cmds/watch-client.sh`
 - Follow instructions in local development section to get app container up
 - Run `app/cmds/process-fa.sh <name-of-dir-in-io>`
 - `iconsets` and `dist` directories will be created in your io directory
-- To copy iconset to GC bucket, run `./app/cmds/upload-iconset.sh <icon-dir>` from host machine
+- To copy iconset to GC bucket, from the directory you created in `io` run `../../app/cmds/upload-iconset.sh .`
