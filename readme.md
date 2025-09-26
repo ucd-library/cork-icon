@@ -5,6 +5,27 @@ This package allows you to use icons in any [cork-app-utils](https://github.com/
 - Seamlessly integrate custom icons with Font Awesome
 - Easily share custom icons between projects
 - Allow users to search for and select icons with a custom element
+
+## Table of Contents
+
+- [Usage](#usage)
+  - [Install and Load](#install-and-load)
+  - [Set Up Middleware](#set-up-middleware)
+  - [Set Up Model, Service, Store](#set-up-model-service-store)
+    - [Basic](#basic)
+    - [Advanced](#advanced)
+  - [Display Icons](#display-icons)
+  - [Other Custom Elements](#other-custom-elements)
+    - [cork-icon-button](#cork-icon-button)
+    - [cork-prefixed-icon-button](#cork-prefixed-icon-button)
+  - [Preload Icons](#preload-icons)
+    - [In Conjunction with the API](#in-conjunction-with-the-api)
+    - [Without the API](#without-the-api)
+- [Updating Icons](#updating-icons)
+  - [Adding an icon to an existing custom iconset](#adding-an-icon-to-an-existing-custom-iconset)
+  - [Creating a new custom iconset](#creating-a-new-custom-iconset)
+  - [Updating icons](#updating-icons-1)
+  - [Uploading a new version of Font Awesome](#uploading-a-new-version-of-font-awesome)
   
 # Usage
 
