@@ -232,13 +232,16 @@ const iconsets = [
 Next, pass to template in SPA middleware:
 ```js
 import spaMiddleware from '@ucd-lib/spa-router-middleware';
-import { iconsets } from '@ucd-lib/cork-icon';
+import { preload } from '@ucd-lib/cork-icon';
+
+// this will make a json script tag with your designated icons
+const preloadedIcons = preload();
 
 spaMiddleware({
   app,
   template : (req, res, next) => {
     next({
-      preloadedIcons: iconsets.preloadIconScript()
+      preloadedIcons
     });
   }
 });
@@ -261,17 +264,19 @@ If you don't need to dynamically load icons with the API, you can skip the api m
 import spaMiddleware from '@ucd-lib/spa-router-middleware';
 import { preload } from '@ucd-lib/cork-icon';
 
+const preloadedIcons = preload([
+  // load just specified icons
+  { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']}, 
+
+  // load a whole (hopefully small) set
+  { name: 'ucdlib-core'} 
+]);
+
 spaMiddleware({
   app,
   template : (req, res, next) => {
     next({
-      preloadedIcons: preload([
-        // load just specified icons
-        { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']}, 
-
-        // load a whole (hopefully small) set
-        { name: 'ucdlib-core'} 
-      ])
+      preloadedIcons
     });
   }
 });

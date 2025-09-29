@@ -13,6 +13,19 @@ export default (app) => {
   const routes = ['select', 'other-elements'];
   const title = 'Cork Icon Demo';
 
+  // preload icons using middleware. preloaded args are defined when setting up the middleware
+  const preloadedIcons = preload();
+
+  // preload icons without using middleware
+  // const preloadedIcons = preload([
+  //   { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']},
+  //   { name: 'ucdlib-core'}
+  // ]);
+
+  // call iconscript generator directly
+  // no reason to do this other than for debugging
+  //const preloadedIcons = iconsets.preloadIconScript(['fab.google', 'fas.seedling'], ['foo']);
+
   spaMiddleware({
     app,
     htmlFile : path.join(assetsDir, 'index.html'),
@@ -38,12 +51,7 @@ export default (app) => {
       next({
         title,
         bundle,
-        preloadedIcons: iconsets.preloadIconScript()
-        // preloadedIcons: preload([
-        //   { name: 'fontawesome-6.7-solid', aliases: ['fas'], preload: ['leaf', 'seedling', 'tree']},
-        //   { name: 'ucdlib-core'}
-        // ])
-        //preloadedIcons: iconsets.preloadIconScript(['fab.google', 'fas.seedling'], ['foo'])
+        preloadedIcons
       });
     }
   });

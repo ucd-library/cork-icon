@@ -3,8 +3,6 @@ import logger from './logger.js';
 
 /**
  * @description Preload icons from specified iconsets and return a script tag to include in HTML
- * For use when you want to preload icons without using the icon API middleware.
- * Note that this will clear out all registered iconsets to free memory after preloading.
  * @param {Array} iconsetOpts - An array of iconset options to register and preload icons from.
  * @param {String} iconsetOpts.name - The name of the iconset.
  * @param {Array} iconsetOpts.aliases - An array of aliases for the iconset. Optional.
@@ -12,6 +10,11 @@ import logger from './logger.js';
  * @returns {String} A script tag containing the preloaded icons.
  */
 export default (iconsetOpts=[]) => {
+
+  if ( iconsetOpts.length && iconsets.iconsets.length ){
+    logger.warn('Iconsets have already been registered. Ignoring args passed to preload() function.');
+    return iconsets.preloadIconScript();
+  }
 
   for ( let iconset of iconsetOpts ) {
     let iconsetName = typeof iconset === 'string' ? iconset : iconset?.name;
@@ -26,8 +29,10 @@ export default (iconsetOpts=[]) => {
 
   const out = iconsets.preloadIconScript();
 
-  // clear out loaded iconsets to free memory
-  iconsets.iconsets = [];
+  if ( iconsetOpts.length ) {
+    logger.info('Clearing registered iconsets after preload().');
+    iconsets.iconsets = [];
+  }
 
   return out;
 }
