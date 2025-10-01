@@ -1,6 +1,6 @@
 {
   "name": "@ucd-lib/cork-icon",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Dynamically load and display icons in a web application using a cork-app-utils data flow.",
   "main": "node.js",
   "exports": {
