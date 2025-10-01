@@ -12,6 +12,7 @@
   },
   "scripts": {
     "download": "node bin/download.js",
+    "extract": "node bin/extract.js",
     "postinstall": "npm run download"
   },
   "author": "spelkey@ucdavis.edu",

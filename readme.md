@@ -21,6 +21,7 @@ This package allows you to use icons in any [cork-app-utils](https://github.com/
   - [Preload Icons](#preload-icons)
     - [In Conjunction with the API](#in-conjunction-with-the-api)
     - [Without the API](#without-the-api)
+    - [Without Express](#without-express)
 - [Updating Icons](#updating-icons)
   - [Adding an icon to an existing custom iconset](#adding-an-icon-to-an-existing-custom-iconset)
   - [Creating a new custom iconset](#creating-a-new-custom-iconset)
@@ -281,6 +282,26 @@ spaMiddleware({
   }
 });
 ```
+
+### Without Express
+Even if you aren't running Express or the spa-router-middleware package, you can use the export utility (`npm run extract or bin/extract.js`) of this package, and include the iconsets in your app, and still use the `cork-icon` element on your front end.
+
+```js
+const usage = `npm run extract -- <input-file> [output-format] [output-dir] [output-file-name]
+
+  <input-file>       Path to the json file with preload arguments -- same as listed above (required)
+  [output-format]    Output format: html, js, json (default: html)
+  [output-dir]      Directory to save the output file (default: current directory)
+  [output-file-name] Name of the output file without extension (default: same as input file)
+
+Example:
+  extract icon-defs.json html ./output icons
+`;
+```
+
+Then you would:
+- include the exported html file in the head of your application.
+- or include the js file in your client build, wrap the contents in a script tag (add the id `cork-icon-preload`), and put in app head.
 
 # Updating Icons
 
