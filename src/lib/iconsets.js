@@ -47,6 +47,7 @@ class Iconsets {
     if ( !_icons?.length ) {
       return ``;
     }
+    _icons = Array.from(new Set(_icons));
     logger.debug(`Preloading ${_icons.length} icons`);
 
     const scriptContents = {
@@ -55,17 +56,22 @@ class Iconsets {
     };
 
     // get icons
+    const missingIcons = [];
     for (const icon of _icons) {
       const iconObj = this.getIcon(icon, {excludeProps: ['searchTerms', 'file']});
       if ( !iconObj ){
-        scriptContents.missingIcons.push(icon);
-        return;
+        missingIcons.push(icon);
+        continue;
       }
       scriptContents.icons.push(iconObj);
       let iconset = this.getIconset(iconObj.iconset);
       if ( !scriptContents.iconsets.some(i => i.name === iconset.name) ) {
         scriptContents.iconsets.push(iconset.describe());
       }
+    }
+
+    if ( missingIcons.length ) {
+      logger.warning(`${missingIcons.length} icons not found for preload: ${missingIcons.join(', ')}`);
     }
 
     return `
@@ -142,7 +148,7 @@ class Iconsets {
 
   /**
    * @description Get icon from registered iconsets by full name (e.g. 'iconset.icon-name').
-   * @param {Sting} name
+   * @param {String} name
    * @returns {Object|null} - Returns the icon object with its contents, or null if not found.
    * @param {Object} opts - Options to pass to the iconset's getIcon method.
    */
