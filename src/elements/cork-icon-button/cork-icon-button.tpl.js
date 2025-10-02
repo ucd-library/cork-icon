@@ -21,6 +21,7 @@ export function styles() {
     }
     .container.basic {
       width: var(--cork-icon-button-size, 2rem);
+      font-size: var(--cork-icon-button-size, 2rem);
       color: var(--ucd-blue-80, #13639E);
       background-color: transparent;
       border-color: transparent;
@@ -42,6 +43,7 @@ export function styles() {
       min-width: var(--cork-icon-button-size, 2.5rem);
       min-height: var(--cork-icon-button-size, 2.5rem);
       border-radius: 50%;
+      font-size: var(--cork-icon-button-size, 2.5rem);
     }
     .container:hover {
       text-decoration: none;
@@ -60,10 +62,10 @@ export function styles() {
       justify-content: center;
     }
     .basic cork-icon {
-      --cork-icon-size: 75%;
+      --cork-icon-size: .75em;
     }
     .round cork-icon {
-      --cork-icon-size: 55%;
+      --cork-icon-size: .55em;
     }
     .container.round.color--light {
       background-color: var(--ucd-blue-40, #DBEAF7);

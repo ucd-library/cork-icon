@@ -82,7 +82,7 @@ let extracted = preload(preloadArgs);
 
 // format output
 if ( outputFormat === 'js' ){
-  extracted = `const iconData = \`${extracted.replace(/`/g, '\\`')}\`;\nexport default iconData;\n`;
+  extracted = `export default String.raw\`${extracted}\`;`;
 } else if ( outputFormat === 'json' ){
   extracted = extracted.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gi, '$1').trim();
   extracted = JSON.parse(extracted);

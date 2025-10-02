@@ -67,7 +67,7 @@ function renderOtherElements(){
         <p>Style Variants</p>
         <div class='flex'>
           <cork-icon-button icon='fas.thumbs-up' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
-          <cork-icon-button icon='fas.thumbs-up' disabled @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.sort' disabled @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
           <cork-icon-button icon='fas.thumbs-up' color='dark' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
           <cork-icon-button icon='fas.thumbs-up' color='dark' disabled @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
           <cork-icon-button icon='fas.thumbs-up' color='medium' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
@@ -82,7 +82,7 @@ function renderOtherElements(){
         <p>Style Variants with href</p>
         <div class='flex'>
           <cork-icon-button icon='fas.thumbs-up' href='/' link-aria-label='Like'></cork-icon-button>
-          <cork-icon-button icon='fas.thumbs-up' color='dark' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.sort' color='dark' href='/'></cork-icon-button>
           <cork-icon-button icon='fas.thumbs-up' color='medium' href='/'></cork-icon-button>
           <cork-icon-button icon='fas.thumbs-up' color='white' href='/'></cork-icon-button>
           <cork-icon-button icon='fas.thumbs-up' basic href='/'></cork-icon-button>
@@ -94,6 +94,36 @@ function renderOtherElements(){
           <cork-icon-button icon='fas.thumbs-down' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}></cork-icon-button>
           <cork-icon-button icon='fas.plus' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}></cork-icon-button>
           <cork-icon-button icon='fas.minus' icon-fetch-strategy='lazy' @click=${e => console.log(`fetch strategy: ${e.target.iconFetchStrategy}`)}></cork-icon-button>
+        </div>
+      </section>
+      <section style='--cork-icon-button-size: 1.5rem;'>
+        <p>Smaller</p>
+        <div class='flex'>
+          <cork-icon-button icon='fas.thumbs-up' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='dark' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='medium' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='white' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' basic @click=${e => console.log(`basic boolean: true`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' href='/' link-aria-label='Like'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='dark' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='medium' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='white' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' basic href='/'></cork-icon-button>
+        </div>
+      </section>
+      <section style='--cork-icon-button-size: 3rem;'>
+        <p>Larger</p>
+        <div class='flex'>
+          <cork-icon-button icon='fas.thumbs-up' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='dark' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='medium' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='white' @click=${e => console.log(`color: ${e.target.color}`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' basic @click=${e => console.log(`basic boolean: true`)}></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' href='/' link-aria-label='Like'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='dark' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='medium' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' color='white' href='/'></cork-icon-button>
+          <cork-icon-button icon='fas.thumbs-up' basic href='/'></cork-icon-button>
         </div>
       </section>
 
