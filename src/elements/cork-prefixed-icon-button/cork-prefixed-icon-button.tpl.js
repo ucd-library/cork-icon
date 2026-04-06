@@ -80,7 +80,7 @@ export function render() {
   return html`
     <slot @slotchange=${this._onSlotChange}></slot>
     ${this.href && !this.disabled ? html`
-      <a href='${this.href}' class=${containerClass}>
+      <a href='${this.href}' class=${containerClass} ?download=${this.linkDownload}>
         <cork-icon icon=${this.icon} fetch-strategy=${this.iconFetchStrategy}></cork-icon>
         <span>${this.text}</span>
       </a>

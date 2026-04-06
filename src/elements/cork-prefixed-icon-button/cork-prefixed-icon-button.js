@@ -10,6 +10,7 @@ import {render, styles} from "./cork-prefixed-icon-button.tpl.js";
  * @prop {String} href - optional. If set, the button will be a link to the provided href. Otherwise, a button element will be rendered.
  * @prop {Boolean} disabled - optional. If true, the button will be disabled.
  * @prop {String} buttonType - optional. The type attribute for the button element. Defaults to 'button'.
+ * @property {Boolean} linkDownload - Optional. If href is set, this will add the download attribute to the link.
  */
 export default class CorkPrefixedIconButton extends LitElement {
 
@@ -21,7 +22,8 @@ export default class CorkPrefixedIconButton extends LitElement {
       iconFetchStrategy: { type: String, attribute: 'icon-fetch-strategy' },
       href: { type: String },
       disabled: { type: Boolean },
-      buttonType: { type: String, attribute: 'button-type' }
+      buttonType: { type: String, attribute: 'button-type' },
+      linkDownload: { type: Boolean, attribute: 'link-download' }
     }
   }
 
@@ -39,6 +41,7 @@ export default class CorkPrefixedIconButton extends LitElement {
     this.href = '';
     this.disabled = false;
     this.buttonType = 'button';
+    this.linkDownload = false;
   }
 
   willUpdate(props){

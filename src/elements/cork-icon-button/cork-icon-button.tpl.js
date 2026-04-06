@@ -128,7 +128,11 @@ export function render() {
   const containerClass = `container color--${this.color} ${this.basic ? 'basic' : 'round'}`;
   if ( this.href && !this.disabled ) {
     return html`
-      <a href='${this.href}' class='${containerClass}' aria-label=${ifDefined(this.linkAriaLabel ? this.linkAriaLabel : undefined)}>
+      <a 
+        href='${this.href}' 
+        class='${containerClass}' 
+        ?download=${this.linkDownload}
+        aria-label=${ifDefined(this.linkAriaLabel ? this.linkAriaLabel : undefined)}>
         <cork-icon icon=${this.icon} fetch-strategy=${this.iconFetchStrategy}></cork-icon>
       </a>
     `;
