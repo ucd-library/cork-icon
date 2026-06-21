@@ -138,7 +138,7 @@ export function render() {
     `;
   } else {
     return html`
-      <button class='${containerClass}' ?disabled=${this.disabled}>
+      <button class='${containerClass}' ?disabled=${this.disabled} aria-label=${ifDefined(this.iconAriaLabel ? this.iconAriaLabel : undefined)}>
         <cork-icon icon=${this.icon} fetch-strategy=${this.iconFetchStrategy}></cork-icon>
       </button>
     `;
